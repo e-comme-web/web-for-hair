@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שושנה — לוח ניהול</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root {
+  --sidebar-bg: #120B0D;
+  --sidebar-w:  240px;
+  --cream:      #FAF6F0;
+  --cream-dark: #F0E8DC;
+  --rose:       #C4617A;
+  --rose-light: #E8B4BC;
+  --gold:       #B8860B;
+  --gold-light: #D4AF6A;
+  --dark:       #2C1A1D;
+  --text:       #3D2B2E;
+  --text-muted: #7A5C62;
+  --white:      #FFFFFF;
+  --success:    #4CAF50;
+  --warning:    #FF9800;
+  --danger:     #E53935;
+  --border:     #E8DDD5;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Frank Ruhl Libre',serif}
+body{display:flex;background:var(--cream);color:var(--text)}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);height:100vh;
+  background:var(--sidebar-bg);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;right:0;bottom:0;
+  z-index:100;overflow-y:auto;
+}
+.sidebar-logo{
+  padding:1.5rem 1.25rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.sidebar-logo h1{
+  font-size:1.5rem;font-weight:900;color:var(--gold-light);
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  line-height:1;
+}
+.sidebar-logo span{font-size:0.7rem;letter-spacing:0.2em;color:var(--rose-light);display:block;margin-top:2px}
+.nav{flex:1;padding:0.5rem 0}
+.nav-section{
+  font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.25);
+  padding:1rem 1.25rem 0.4rem;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.7rem 1.25rem;cursor:pointer;
+  font-size:0.9rem;color:rgba(255,255,255,0.55);
+  transition:all 0.2s ease;border-right:3px solid transparent;
+}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85)}
+.nav-item.active{
+  background:rgba(196,97,122,0.12);
+  color:var(--rose-light);
+  border-right-color:var(--rose);
+}
+.nav-item .icon{font-size:1rem;width:20px;text-align:center}
+.nav-badge{
+  margin-right:auto;background:var(--rose);color:#fff;
+  border-radius:50%;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:700;
+}
+.sidebar-footer{
+  padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);
+  font-size:0.75rem;color:rgba(255,255,255,0.25);
+}
+.sidebar-footer a{color:var(--gold-light);text-decoration:none}
+
+/* ── MAIN ── */
+.main{margin-right:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{
+  background:var(--white);padding:0 2rem;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+}
+.topbar-title{font-size:1.1rem;font-weight:700;color:var(--dark)}
+.topbar-actions{display:flex;align-items:center;gap:0.75rem}
+.content{padding:2rem;flex:1}
+
+/* ── CARDS ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{
+  background:var(--white);border:1px solid var(--border);
+  padding:1.25rem;position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:4px;
+  background:var(--rose);
+}
+.stat-card:nth-child(2)::before{background:var(--gold)}
+.stat-card:nth-child(3)::before{background:#7AB4E8}
+.stat-card:nth-child(4)::before{background:var(--success)}
+.stat-value{font-size:2rem;font-weight:900;color:var(--dark);line-height:1}
+.stat-label{font-size:0.8rem;color:var(--text-muted);margin-top:4px;letter-spacing:0.05em}
+.stat-sub{font-size:0.75rem;color:var(--text-muted);margin-top:6px}
+
+/* ── TABLES ── */
+.table-wrap{background:var(--white);border:1px solid var(--border);overflow:hidden}
+.table-header{
+  padding:1rem 1.5rem;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border);
+}
+.table-header h3{font-size:1rem;font-weight:700;color:var(--dark)}
+table{width:100%;border-collapse:collapse}
+th{
+  background:var(--cream);padding:0.65rem 1rem;
+  font-size:0.75rem;font-weight:700;color:var(--text-muted);
+  text-align:right;letter-spacing:0.05em;border-bottom:1px solid var(--border);
+}
+td{padding:0.85rem 1rem;font-size:0.9rem;border-bottom:1px solid var(--cream-dark)}
+tr:hover td{background:var(--cream)}
+tr:last-child td{border-bottom:none}
+.product-thumb{
+  width:40px;height:40px;border-radius:4px;
+  background:var(--cream-dark);display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;overflow:hidden;
+}
+.product-thumb img{width:100%;height:100%;object-fit:cover}
+
+/* ── BADGES / STATUS ── */
+.badge{
+  display:inline-block;padding:0.2rem 0.6rem;
+  border-radius:50px;font-size:0.75rem;font-weight:500;
+}
+.badge-pending   {background:#FFF3E0;color:#E65100}
+.badge-paid      {background:#E8F5E9;color:#2E7D32}
+.badge-shipped   {background:#E3F2FD;color:#1565C0}
+.badge-delivered {background:#F3E5F5;color:#6A1B9A}
+.badge-cancelled {background:#FFEBEE;color:#C62828}
+.badge-new       {background:rgba(196,97,122,0.12);color:var(--rose)}
+.badge-sale      {background:rgba(184,134,11,0.12);color:var(--gold)}
+
+/* ── BUTTONS ── */
+.btn{
+  padding:0.55rem 1.25rem;border:none;font-family:'Frank Ruhl Libre',serif;
+  font-size:0.875rem;cursor:pointer;transition:all 0.2s ease;
+  display:inline-flex;align-items:center;gap:0.4rem;
+}
+.btn-primary{background:var(--dark);color:var(--gold-light)}
+.btn-primary:hover{background:var(--rose)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--gold-light)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{opacity:0.85}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--dark);color:var(--dark)}
+.btn-sm{padding:0.3rem 0.75rem;font-size:0.8rem}
+.btn-icon{padding:0.4rem;border-radius:4px}
+
+/* ── FORMS ── */
+.form-row{display:grid;gap:1rem;margin-bottom:1rem}
+.form-row.col2{grid-template-columns:1fr 1fr}
+.form-row.col3{grid-template-columns:1fr 1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:0.35rem}
+label{font-size:0.8rem;font-weight:700;color:var(--text-muted);letter-spacing:0.05em}
+input,select,textarea{
+  padding:0.65rem 0.9rem;border:1px solid var(--border);
+  font-family:'Frank Ruhl Libre',serif;font-size:0.9rem;
+  color:var(--dark);background:var(--white);
+  transition:border-color 0.2s;outline:none;
+  direction:rtl;width:100%;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--rose)}
+textarea{resize:vertical;min-height:80px}
+.form-hint{font-size:0.75rem;color:var(--text-muted)}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(44,26,29,0.65);
+  z-index:200;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+  backdrop-filter:blur(3px);
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--white);width:min(640px,95vw);max-height:90vh;
+  overflow-y:auto;display:flex;flex-direction:column;
+  transform:translateY(20px);transition:transform 0.3s ease;
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-head{
+  padding:1.25rem 1.5rem;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--white);z-index:1;
+}
+.modal-head h3{font-size:1.1rem;font-weight:700}
+.modal-close{
+  background:none;border:none;font-size:1.4rem;cursor:pointer;
+  color:var(--text-muted);padding:0.2rem;transition:color 0.2s;
+}
+.modal-close:hover{color:var(--dark)}
+.modal-body{padding:1.5rem}
+.modal-foot{
+  padding:1rem 1.5rem;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:0.75rem;
+  position:sticky;bottom:0;background:var(--white);
+}
+
+/* ── UPLOAD DROP ── */
+.upload-drop{
+  border:2px dashed var(--border);padding:2rem;text-align:center;
+  cursor:pointer;transition:all 0.2s;background:var(--cream);
+}
+.upload-drop:hover,.upload-drop.drag{border-color:var(--rose);background:rgba(196,97,122,0.05)}
+.upload-preview{
+  width:100%;max-height:200px;object-fit:contain;margin-top:0.5rem;
+}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem}
+.upload-text{font-size:0.85rem;color:var(--text-muted)}
+
+/* ── TOGGLE ── */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.75rem 0;border-bottom:1px solid var(--cream-dark);
+}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info h4{font-size:0.9rem;font-weight:700;color:var(--dark)}
+.toggle-info p{font-size:0.8rem;color:var(--text-muted);margin-top:2px}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{
+  position:absolute;inset:0;background:#ddd;border-radius:24px;
+  transition:0.3s;cursor:pointer;
+}
+.toggle-slider::before{
+  content:'';position:absolute;width:18px;height:18px;
+  left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s;
+}
+.toggle input:checked + .toggle-slider{background:var(--rose)}
+.toggle input:checked + .toggle-slider::before{transform:translateX(20px)}
+
+/* ── COLOR PICKER ── */
+.color-pick{display:flex;align-items:center;gap:0.75rem}
+.color-preview{width:40px;height:40px;border:1px solid var(--border);cursor:pointer}
+input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60px;cursor:pointer}
+
+/* ── DESIGN PANEL ── */
+.design-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.design-section{background:var(--white);border:1px solid var(--border);padding:1.25rem}
+.design-section h4{font-size:0.85rem;font-weight:700;color:var(--text-muted);letter-spacing:0.1em;margin-bottom:1rem;text-transform:uppercase}
+.font-preview{
+  padding:0.75rem;border:1px solid var(--border);margin-top:0.5rem;
+  font-size:1.1rem;text-align:center;color:var(--dark);
+}
+
+/* ── SETTINGS SECTIONS ── */
+.settings-section{
+  background:var(--white);border:1px solid var(--border);
+  margin-bottom:1.5rem;
+}
+.settings-section-head{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:0.75rem;
+}
+.settings-section-head h3{font-size:1rem;font-weight:700}
+.settings-section-body{padding:1.5rem}
+
+/* ── TOAST ── */
+.toasts{
+  position:fixed;bottom:2rem;left:2rem;z-index:999;
+  display:flex;flex-direction:column;gap:0.5rem;
+}
+.toast{
+  background:var(--dark);color:var(--cream);
+  padding:0.75rem 1.25rem;font-size:0.875rem;
+  display:flex;align-items:center;gap:0.5rem;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  animation:slideIn 0.3s ease;
+}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+@keyframes slideIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── EMPTY ── */
+.empty-state{text-align:center;padding:3rem;color:var(--text-muted)}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:0.75rem}
+
+/* ── SEARCH BAR ── */
+.search-bar{
+  display:flex;gap:0.5rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap;
+}
+.search-bar input{flex:1;min-width:200px}
+.search-bar select{min-width:140px}
+
+/* ── ICON GRID ── */
+.icon-picker{
+  display:grid;grid-template-columns:repeat(8,1fr);gap:4px;
+  max-height:160px;overflow-y:auto;
+}
+.icon-opt{
+  padding:6px;text-align:center;font-size:1.2rem;cursor:pointer;
+  border:2px solid transparent;border-radius:4px;transition:0.15s;
+}
+.icon-opt:hover,.icon-opt.selected{border-color:var(--rose);background:rgba(196,97,122,0.08)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{margin-right:0}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .design-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr}
+  .form-row.col2,.form-row.col3{grid-template-columns:1fr}
+}
+
+/* ── VIEWS (only one .view shown at a time) ── */
+.view{display:none}.view.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ──────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>שושנה</h1>
+    <span>ADMIN PANEL</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">ראשי</div>
+    <div class="nav-item active" onclick="showView('dashboard')">
+      <span class="icon">📊</span> לוח בקרה
+    </div>
+    <div class="nav-item" onclick="showView('orders')">
+      <span class="icon">📦</span> הזמנות
+      <span class="nav-badge" id="pendingBadge">0</span>
+    </div>
+
+    <div class="nav-section">קטלוג</div>
+    <div class="nav-item" onclick="showView('products')">
+      <span class="icon">🎀</span> מוצרים
+    </div>
+    <div class="nav-item" onclick="showView('content')">
+      <span class="icon">🖼</span> תוכן ובאנרים
+    </div>
+
+    <div class="nav-section">שיווק ותשלומים</div>
+    <div class="nav-item" onclick="showView('notifications')">
+      <span class="icon">💬</span> הודעות
+    </div>
+    <div class="nav-item" onclick="showView('payments')">
+      <span class="icon">💳</span> סליקה
+    </div>
+    <div class="nav-item" onclick="showView('shipping')">
+      <span class="icon">🚚</span> משלוחים (DHL)
+    </div>
+
+    <div class="nav-section">אתר</div>
+    <div class="nav-item" onclick="showView('design')">
+      <span class="icon">🎨</span> עיצוב
+    </div>
+    <div class="nav-item" onclick="showView('settings')">
+      <span class="icon">⚙️</span> הגדרות
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="hair-boutique.html" target="_blank">🔗 פתח את החנות</a><br>
+    <span style="margin-top:4px;display:block">v1.0 | שושנה בוטיק</span>
+  </div>
+</aside>
+
+<!-- ── MAIN ─────────────────────────────────────────────────── -->
+<div class="main">
+  <div class="topbar">
+    <span class="topbar-title" id="pageTitle">לוח בקרה</span>
+    <div class="topbar-actions">
+      <a href="hair-boutique.html" target="_blank" class="btn btn-outline btn-sm">👁 צפה בחנות</a>
+      <button class="btn btn-primary btn-sm" id="topbarAction" onclick="openAddProduct()">+ הוסף מוצר</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ──────────────────────────────────────── -->
+    <div id="view-dashboard" class="view active">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-revenue">₪0</div>
+          <div class="stat-label">הכנסות סה"כ</div>
+          <div class="stat-sub" id="stat-today-rev">היום: ₪0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-orders">0</div>
+          <div class="stat-label">הזמנות</div>
+          <div class="stat-sub" id="stat-today-ord">היום: 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-products">0</div>
+          <div class="stat-label">מוצרים</div>
+          <div class="stat-sub" id="stat-low-stock">מלאי נמוך: 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-label">ממתינות לטיפול</div>
+          <div class="stat-sub">הזמנות פתוחות</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>הזמנות אחרונות</h3>
+          <button class="btn btn-outline btn-sm" onclick="showView('orders')">כל ההזמנות →</button>
+        </div>
+        <table id="dashOrdersTable">
+          <thead><tr><th>מספר</th><th>לקוח</th><th>סה"כ</th><th>סטטוס</th><th>תאריך</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS ───────────────────────────────────────── -->
+    <div id="view-products" class="view">
+      <div class="search-bar">
+        <input type="text" placeholder="חיפוש מוצר..." oninput="filterProducts(this.value)" style="max-width:300px">
+        <select onchange="filterProductsCat(this.value)">
+          <option value="">כל הקטגוריות</option>
+          <option>סרטי שיער</option>
+          <option>קליפסים</option>
+          <option>גומיות</option>
+          <option>סיכות</option>
+        </select>
+        <button class="btn btn-primary" onclick="openAddProduct()">+ הוסף מוצר</button>
+      </div>
+      <div class="table-wrap">
+        <table id="productsTable">
+          <thead><tr><th>תמונה</th><th>שם מוצר</th><th>קטגוריה</th><th>מחיר</th><th>מלאי</th><th>סטטוס</th><th>פעולות</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ORDERS ─────────────────────────────────────────── -->
+    <div id="view-orders" class="view">
+      <div class="search-bar">
+        <input type="text" placeholder="חיפוש לפי מספר/שם..." oninput="filterOrders(this.value)" style="max-width:260px">
+        <select onchange="filterOrdersStatus(this.value)">
+          <option value="">כל הסטטוסים</option>
+          <option value="pending">ממתין</option>
+          <option value="paid">שולם</option>
+          <option value="shipped">נשלח</option>
+          <option value="delivered">נמסר</option>
+          <option value="cancelled">בוטל</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table id="ordersTable">
+          <thead><tr><th>מספר</th><th>לקוח</th><th>טלפון</th><th>סה"כ</th><th>משלוח</th><th>סטטוס</th><th>תאריך</th><th>פעולות</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── CONTENT / BANNERS ──────────────────────────────── -->
+    <div id="view-content" class="view">
+      <div style="margin-bottom:1rem;display:flex;gap:0.75rem;align-items:center">
+        <h3 style="font-size:1rem;color:var(--dark)">באנרים פעילים</h3>
+        <button class="btn btn-primary" onclick="openAddBanner()">+ הוסף באנר</button>
+      </div>
+      <div id="bannersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem"></div>
+    </div>
+
+    <!-- ── NOTIFICATIONS ──────────────────────────────────── -->
+    <div id="view-notifications" class="view">
+      <div class="settings-section">
+        <div class="settings-section-head"><span>📱</span><h3>SMS — Inforu (אינפורו)</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>שם משתמש</label><input id="n-inforu-user" placeholder="username@example.com"></div>
+            <div class="form-group"><label>סיסמה</label><input id="n-inforu-pass" type="password" placeholder="••••••••"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>שם שולח (עד 11 תווים)</label><input id="n-inforu-sender" placeholder="Shoshana" maxlength="11"></div>
+          </div>
+          <div style="margin-top:1rem">
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>SMS לבעל העסק עם כל הזמנה חדשה</h4></div>
+              <label class="toggle"><input type="checkbox" id="n-sms-owner"><span class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>SMS ללקוח עם אישור הזמנה</h4></div>
+              <label class="toggle"><input type="checkbox" id="n-sms-cust"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div style="margin-top:1.25rem;display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-group" style="flex:1;min-width:180px"><label>שלח הודעת בדיקה לטלפון</label><input id="n-test-phone" placeholder="050-0000000"></div>
+            <button class="btn btn-outline" onclick="testSMS()">📱 שלח SMS בדיקה</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>💬</span><h3>WhatsApp Business API</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>Token (Bearer)</label><input id="n-wa-token" placeholder="EAAxxxxx..." type="password"></div>
+            <div class="form-group"><label>Phone Number ID</label><input id="n-wa-phoneid" placeholder="12345678901234"></div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>WhatsApp ללקוח עם אישור הזמנה</h4></div>
+            <label class="toggle"><input type="checkbox" id="n-wa-cust"><span class="toggle-slider"></span></label>
+          </div>
+          <div style="margin-top:1.25rem;display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-group" style="flex:1;min-width:180px"><label>שלח הודעת בדיקה</label><input id="n-test-wa" placeholder="972501234567"></div>
+            <button class="btn btn-outline" onclick="testWhatsApp()">💬 שלח WA בדיקה</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>📧</span><h3>אימייל (SMTP)</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>SMTP Host</label><input id="n-email-host" placeholder="smtp.gmail.com"></div>
+            <div class="form-group"><label>Port</label><input id="n-email-port" placeholder="587" type="number"></div>
+          </div>
+          <div class="form-row col2">
+            <div class="form-group"><label>אימייל</label><input id="n-email-user" placeholder="store@example.com"></div>
+            <div class="form-group"><label>סיסמה / App Password</label><input id="n-email-pass" type="password" placeholder="••••••••"></div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>אימייל ללקוח עם אישור הזמנה</h4></div>
+            <label class="toggle"><input type="checkbox" id="n-email-cust"><span class="toggle-slider"></span></label>
+          </div>
+          <div style="margin-top:1.25rem;display:flex;gap:0.75rem;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-group" style="flex:1;min-width:200px"><label>שלח אימייל בדיקה</label><input id="n-test-email" placeholder="test@example.com"></div>
+            <button class="btn btn-outline" onclick="testEmail()">📧 שלח אימייל בדיקה</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveNotificationSettings()">💾 שמור הגדרות הודעות</button>
+    </div>
+
+    <!-- ── PAYMENTS ───────────────────────────────────────── -->
+    <div id="view-payments" class="view">
+      <div class="settings-section">
+        <div class="settings-section-head"><span>🏦</span><h3>Cardcom — קארדקום</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>מספר טרמינל</label><input id="p-cc-terminal" placeholder="12345"></div>
+            <div class="form-group"><label>Username</label><input id="p-cc-user" placeholder="biz"></div>
+          </div>
+          <p class="form-hint">השג פרטים מ-<a href="https://cardcom.solutions" target="_blank">cardcom.solutions</a> | מחיר: ~0.9% + ₪0.2 לעסקה</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>💳</span><h3>PayPlus — פיי פלוס</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>API Key</label><input id="p-pp-key" type="password" placeholder="eyJhbGci..."></div>
+            <div class="form-group"><label>Payment Page UID</label><input id="p-pp-uid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx"></div>
+          </div>
+          <p class="form-hint">תומך ב-Apple Pay, Google Pay ו-Buy Now Pay Later. <a href="https://payplus.co.il" target="_blank">payplus.co.il</a></p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>🔐</span><h3>Tranzila — טרנזילה</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>Supplier (שם ספק)</label><input id="p-tz-supplier" placeholder="myshop"></div>
+            <div class="form-group"><label>TranzilaPW (אופציונלי)</label><input id="p-tz-pw" type="password"></div>
+          </div>
+          <p class="form-hint"><a href="https://www.tranzila.com" target="_blank">tranzila.com</a> — ותיקה ואמינה, מחיר 0.8%–1.2%</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>⚙️</span><h3>שער ברירת מחדל</h3></div>
+        <div class="settings-section-body">
+          <div class="form-group">
+            <label>שער תשלום פעיל בקופה</label>
+            <select id="p-default-gateway">
+              <option value="cardcom">Cardcom</option>
+              <option value="payplus">PayPlus</option>
+              <option value="tranzila">Tranzila</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="savePaymentSettings()">💾 שמור הגדרות סליקה</button>
+    </div>
+
+    <!-- ── SHIPPING ───────────────────────────────────────── -->
+    <div id="view-shipping" class="view">
+      <div class="settings-section">
+        <div class="settings-section-head"><span>✈️</span><h3>DHL Israel — הגדרות API</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>DHL API Key</label><input id="s-dhl-key" type="password" placeholder="API Key מ-MyDHL API Portal"></div>
+            <div class="form-group"><label>Account Number</label><input id="s-dhl-account" placeholder="123456789"></div>
+          </div>
+          <div class="form-row col2">
+            <div class="form-group"><label>מיקוד מוצא (ברירת מחדל)</label><input id="s-dhl-zip" placeholder="6100000"></div>
+            <div class="form-group"><label>משלוח חינם מ-₪ (0 = ללא)</label><input id="s-dhl-free" type="number" placeholder="200"></div>
+          </div>
+          <p class="form-hint">ניתן לקבל API Key ב-<a href="https://developer.dhl.com" target="_blank">developer.dhl.com</a></p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>🧮</span><h3>מחשבון מחיר משלוח</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col3">
+            <div class="form-group"><label>מיקוד יעד</label><input id="calc-zip" placeholder="6100000"></div>
+            <div class="form-group"><label>משקל (ק"ג)</label><input id="calc-weight" type="number" step="0.1" placeholder="0.5"></div>
+            <div class="form-group"><label>סכום הזמנה ₪</label><input id="calc-total" type="number" placeholder="150"></div>
+          </div>
+          <button class="btn btn-outline" onclick="calcShipping()">🔍 חשב עלות משלוח</button>
+          <div id="calc-results" style="margin-top:1rem"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveShippingSettings()">💾 שמור הגדרות משלוחים</button>
+    </div>
+
+    <!-- ── DESIGN ─────────────────────────────────────────── -->
+    <div id="view-design" class="view">
+      <div style="margin-bottom:1.25rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <h3 style="font-size:1rem;color:var(--dark)">עיצוב החנות</h3>
+        <button class="btn btn-primary" onclick="applyDesign()">🎨 החל שינויים</button>
+        <button class="btn btn-outline" onclick="resetDesign()">↺ איפוס לברירת מחדל</button>
+        <a href="hair-boutique.html" target="_blank" class="btn btn-outline">👁 תצוגה מקדימה</a>
+      </div>
+      <div class="design-grid">
+        <div class="design-section">
+          <h4>🎨 צבעים</h4>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>צבע ראשי (ורוד)</h4></div>
+              <input type="color" id="d-color-rose" value="#C4617A">
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>צבע זהב / מבטא</h4></div>
+              <input type="color" id="d-color-gold" value="#B8860B">
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>רקע (קרם)</h4></div>
+              <input type="color" id="d-color-cream" value="#FAF6F0">
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info"><h4>צבע כהה / טקסט</h4></div>
+              <input type="color" id="d-color-dark" value="#2C1A1D">
+            </div>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h4>🔤 פונטים</h4>
+          <div class="form-group">
+            <label>פונט ראשי (כותרות)</label>
+            <select id="d-font-heading" onchange="previewFont()">
+              <option value="Frank Ruhl Libre">Frank Ruhl Libre (ברירת מחדל)</option>
+              <option value="Noto Serif Hebrew">Noto Serif Hebrew</option>
+              <option value="Suez One">Suez One</option>
+              <option value="Heebo">Heebo (מינימליסטי)</option>
+              <option value="Rubik">Rubik (עגלגל)</option>
+              <option value="Assistant">Assistant (נקי)</option>
+            </select>
+            <div class="font-preview" id="font-preview-heading">אביזרי שיער יוקרתיים 🌸</div>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h4>🟦 כפתורים</h4>
+          <div class="form-group">
+            <label>סגנון כפתורים</label>
+            <select id="d-btn-radius">
+              <option value="0">מרובע (0px)</option>
+              <option value="4">מעוגל קל (4px)</option>
+              <option value="8">מעוגל (8px)</option>
+              <option value="50">עגול (pill)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:0.75rem">
+            <label>צפיפות הרשת (מוצרים בשורה)</label>
+            <select id="d-grid-cols">
+              <option value="3">3 מוצרים</option>
+              <option value="4" selected>4 מוצרים</option>
+              <option value="5">5 מוצרים</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h4>📝 טקסטי Hero</h4>
+          <div class="form-group"><label>שורה ראשונה</label><input id="d-hero-line1" placeholder="לשיער"></div>
+          <div class="form-group" style="margin-top:0.5rem"><label>שורה שנייה (נטויה)</label><input id="d-hero-line2" placeholder="שמספר סיפור"></div>
+          <div class="form-group" style="margin-top:0.5rem"><label>תת-כותרת</label><textarea id="d-hero-sub" rows="2" placeholder="אביזרי שיער יוקרתיים..."></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ───────────────────────────────────────── -->
+    <div id="view-settings" class="view">
+      <div class="settings-section">
+        <div class="settings-section-head"><span>🏪</span><h3>פרטי החנות</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>שם החנות</label><input id="st-name" placeholder="שושנה בוטיק"></div>
+            <div class="form-group"><label>אימייל</label><input id="st-email" type="email" placeholder="store@example.com"></div>
+          </div>
+          <div class="form-row col2">
+            <div class="form-group"><label>טלפון</label><input id="st-phone" placeholder="050-0000000"></div>
+            <div class="form-group"><label>עיר</label><input id="st-city" placeholder="תל אביב"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>כתובת</label><input id="st-address" placeholder="רחוב הבוטיק 1, תל אביב"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>📱</span><h3>רשתות חברתיות</h3></div>
+        <div class="settings-section-body">
+          <div class="form-row col2">
+            <div class="form-group"><label>Instagram</label><input id="st-instagram" placeholder="@shoshana_boutique"></div>
+            <div class="form-group"><label>TikTok</label><input id="st-tiktok" placeholder="@shoshana"></div>
+          </div>
+          <div class="form-row col2">
+            <div class="form-group"><label>Facebook</label><input id="st-facebook" placeholder="fb.com/shoshana"></div>
+            <div class="form-group"><label>WhatsApp ליצירת קשר</label><input id="st-wa-contact" placeholder="972501234567"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-head"><span>🔍</span><h3>SEO</h3></div>
+        <div class="settings-section-body">
+          <div class="form-group"><label>כותרת האתר (Title)</label><input id="st-seo-title" placeholder="שושנה | אביזרי שיער יוקרתיים"></div>
+          <div class="form-group" style="margin-top:0.5rem"><label>תיאור (Meta Description)</label><textarea id="st-seo-desc" rows="2" placeholder="קולקציית אביזרי שיער יוקרתיים..."></textarea></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveStoreSettings()">💾 שמור הגדרות</button>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ── TOAST CONTAINER ── -->
+<div class="toasts" id="toasts"></div>
+
+<!-- ── MODAL: Add/Edit Product ── -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="productModalTitle">הוסף מוצר</h3>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="prod-id">
+      <div class="form-row col2">
+        <div class="form-group"><label>שם המוצר *</label><input id="prod-name" placeholder="קליפס צב זהב גדול"></div>
+        <div class="form-group">
+          <label>קטגוריה *</label>
+          <select id="prod-cat">
+            <option>סרטי שיער</option>
+            <option>קליפסים</option>
+            <option>גומיות</option>
+            <option>סיכות</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row col3">
+        <div class="form-group"><label>מחיר (₪) *</label><input id="prod-price" type="number" step="0.01" placeholder="79"></div>
+        <div class="form-group"><label>מחיר מקורי (₪)</label><input id="prod-orig" type="number" step="0.01" placeholder="129"></div>
+        <div class="form-group"><label>מלאי</label><input id="prod-stock" type="number" placeholder="50"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>תיאור המוצר</label><textarea id="prod-desc" placeholder="תיאור קצר וממכר..."></textarea></div>
+      </div>
+      <div class="form-row col2">
+        <div class="form-group">
+          <label>תגית (Badge)</label>
+          <select id="prod-badge">
+            <option value="">ללא תגית</option>
+            <option value="חדש">חדש</option>
+            <option value="פופולרי">פופולרי</option>
+            <option value="מומלץ">מומלץ</option>
+            <option value="סייל">סייל</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>אמוג'י (אייקון)</label>
+          <input id="prod-icon" value="🎀" placeholder="🎀" style="font-size:1.5rem;text-align:center">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>בחר אמוג'י מהיר</label>
+        <div class="icon-picker" id="iconPicker"></div>
+      </div>
+      <div class="form-group" style="margin-top:0.75rem">
+        <label>תמונת מוצר</label>
+        <div class="upload-drop" id="productDropzone" onclick="document.getElementById('prod-img').click()" ondragover="e=>e.preventDefault()" ondrop="handleDrop(event,'prod-img','productDropzone')">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">לחץ לבחירת תמונה או גרור לכאן<br><small>JPG, PNG, WEBP עד 15MB</small></div>
+          <img id="prod-img-preview" class="upload-preview" style="display:none">
+        </div>
+        <input type="file" id="prod-img" accept="image/*" style="display:none" onchange="previewImage(this,'prod-img-preview','productDropzone')">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('productModal')">ביטול</button>
+      <button class="btn btn-primary" onclick="saveProduct()">💾 שמור מוצר</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Add Banner ── -->
+<div class="modal-overlay" id="bannerModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-head">
+      <h3>הוסף באנר</h3>
+      <button class="modal-close" onclick="closeModal('bannerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>כותרת ראשית</label><input id="ban-title" placeholder="מבצע קיץ 🌸"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>תת-כותרת</label><input id="ban-sub" placeholder="עד 40% הנחה על כל הקולקציה"></div>
+      </div>
+      <div class="form-row col2">
+        <div class="form-group"><label>קישור</label><input id="ban-link" placeholder="#products"></div>
+        <div class="form-group"><label>צבע רקע</label><input type="color" id="ban-color" value="#C4617A" style="height:42px;width:100%"></div>
+      </div>
+      <div class="form-group" style="margin-top:0.5rem">
+        <label>תמונת רקע (אופציונלי)</label>
+        <div class="upload-drop" onclick="document.getElementById('ban-img').click()">
+          <div class="upload-icon">🖼</div>
+          <div class="upload-text">בחר תמונה לבאנר</div>
+          <img id="ban-img-preview" class="upload-preview" style="display:none">
+        </div>
+        <input type="file" id="ban-img" accept="image/*" style="display:none" onchange="previewImage(this,'ban-img-preview',null)">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('bannerModal')">ביטול</button>
+      <button class="btn btn-primary" onclick="saveBanner()">💾 פרסם באנר</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: View Order ── -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-head">
+      <h3 id="orderModalTitle">פרטי הזמנה</h3>
+      <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+    </div>
+    <div class="modal-body" id="orderModalBody"></div>
+    <div class="modal-foot">
+      <select id="orderStatusSelect" style="padding:0.55rem 1rem;border:1px solid var(--border);font-family:inherit">
+        <option value="pending">ממתין</option>
+        <option value="paid">שולם</option>
+        <option value="shipped">נשלח</option>
+        <option value="delivered">נמסר</option>
+        <option value="cancelled">בוטל</option>
+      </select>
+      <button class="btn btn-outline" onclick="createShipmentFromOrder()">🚚 יצור משלוח DHL</button>
+      <button class="btn btn-primary" onclick="updateOrderStatus()">עדכן סטטוס</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── API CLIENT ──────────────────────────────────────────────
+const BASE = window.API_BASE || '';
+const API = {
+  async get(url) {
+    const r = await fetch(BASE + url);
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async post(url, data) {
+    const isForm = data instanceof FormData;
+    const r = await fetch(BASE + url, {
+      method: 'POST',
+      headers: isForm ? {} : { 'Content-Type': 'application/json' },
+      body:   isForm ? data : JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async put(url, data) {
+    const r = await fetch(BASE + url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body:   JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async del(url) {
+    const r = await fetch(BASE + url, { method: 'DELETE' });
+    if (!r.ok) throw new Error(await r.text());
+    return r.json();
+  }
+};
+
+// ── STATE ────────────────────────────────────────────────────
+let products = [], orders = [], banners = [], settings = {};
+let currentOrderId = null;
+const ICONS = ['🎀','✨','💍','🌸','🎗','🐚','⭐','🌿','💫','🦋','🌺','💎','👑','🌙','🌼','🎊','💐','🌈','🎈','🍓'];
+
+// ── INIT ─────────────────────────────────────────────────────
+async function init() {
+  buildIconPicker();
+  await Promise.all([loadStats(), loadProducts(), loadOrders(), loadBanners(), loadSettings()]);
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────
+const viewTitles = {
+  dashboard:'לוח בקרה', products:'מוצרים', orders:'הזמנות',
+  content:'תוכן ובאנרים', notifications:'הגדרות הודעות',
+  payments:'הגדרות סליקה', shipping:'הגדרות משלוחים',
+  design:'עיצוב החנות', settings:'הגדרות החנות'
+};
+const viewActions = {
+  products: { label:'+ הוסף מוצר', fn:'openAddProduct()' },
+  content:  { label:'+ הוסף באנר', fn:'openAddBanner()' }
+};
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`view-${name}`)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.textContent.trim() === viewTitles[name]) n.classList.add('active');
+  });
+  document.getElementById('pageTitle').textContent = viewTitles[name] || name;
+  const act = viewActions[name];
+  const btn = document.getElementById('topbarAction');
+  if (act) { btn.textContent = act.label; btn.setAttribute('onclick', act.fn); btn.style.display = ''; }
+  else      { btn.style.display = 'none'; }
+  if (name === 'notifications') populateNotificationFields();
+  if (name === 'payments')      populatePaymentFields();
+  if (name === 'shipping')      populateShippingFields();
+  if (name === 'design')        populateDesignFields();
+  if (name === 'settings')      populateSettingsFields();
+}
+
+// ── STATS ────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const s = await API.get('/api/stats');
+    document.getElementById('stat-revenue').textContent    = `₪${s.totalRevenue.toLocaleString()}`;
+    document.getElementById('stat-today-rev').textContent  = `היום: ₪${s.todayRevenue.toLocaleString()}`;
+    document.getElementById('stat-orders').textContent     = s.totalOrders;
+    document.getElementById('stat-today-ord').textContent  = `היום: ${s.todayOrders}`;
+    document.getElementById('stat-products').textContent   = s.totalProducts;
+    document.getElementById('stat-low-stock').textContent  = `מלאי נמוך: ${s.lowStock}`;
+    document.getElementById('stat-pending').textContent    = s.pendingOrders;
+    document.getElementById('pendingBadge').textContent    = s.pendingOrders;
+  } catch(e) { console.warn('Stats:', e.message); }
+}
+
+// ── PRODUCTS ─────────────────────────────────────────────────
+async function loadProducts() {
+  try {
+    products = await API.get('/api/products');
+    renderProducts(products);
+  } catch(e) { toast('שגיאה בטעינת מוצרים','error'); }
+}
+
+function renderProducts(list) {
+  const tbody = document.querySelector('#productsTable tbody');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📦</div>אין מוצרים עדיין</div></td></tr>'; return; }
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td><div class="product-thumb">${p.image ? `<img src="${p.image}">` : p.icon}</div></td>
+      <td><strong>${p.name}</strong><br><small style="color:var(--text-muted)">${p.description?.slice(0,40) || ''}...</small></td>
+      <td>${p.category}</td>
+      <td><strong>₪${p.price}</strong>${p.originalPrice ? `<br><small style="text-decoration:line-through;color:var(--text-muted)">₪${p.originalPrice}</small>` : ''}</td>
+      <td><span style="color:${p.stock < 5 ? 'var(--danger)' : 'inherit'}">${p.stock ?? '∞'}</span></td>
+      <td><span class="badge ${p.active !== false ? 'badge-paid' : 'badge-cancelled'}">${p.active !== false ? 'פעיל' : 'לא פעיל'}</span>${p.badge ? ` <span class="badge badge-new">${p.badge}</span>` : ''}</td>
+      <td>
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editProduct('${p.id}')" title="עריכה">✏️</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteProduct('${p.id}')" title="מחיקה" style="margin-right:4px">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterProducts(q) {
+  renderProducts(products.filter(p => p.name.includes(q) || p.description?.includes(q)));
+}
+function filterProductsCat(cat) {
+  renderProducts(cat ? products.filter(p => p.category === cat) : products);
+}
+
+function openAddProduct() {
+  document.getElementById('productModalTitle').textContent = 'הוסף מוצר';
+  ['prod-id','prod-name','prod-desc','prod-price','prod-orig','prod-stock','prod-icon'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = id === 'prod-icon' ? '🎀' : '';
+  });
+  document.getElementById('prod-badge').value = '';
+  document.getElementById('prod-cat').value = 'קליפסים';
+  document.getElementById('prod-img-preview').style.display = 'none';
+  openModal('productModal');
+}
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('productModalTitle').textContent = 'עריכת מוצר';
+  document.getElementById('prod-id').value    = p.id;
+  document.getElementById('prod-name').value  = p.name;
+  document.getElementById('prod-cat').value   = p.category;
+  document.getElementById('prod-price').value = p.price;
+  document.getElementById('prod-orig').value  = p.originalPrice || '';
+  document.getElementById('prod-stock').value = p.stock ?? '';
+  document.getElementById('prod-desc').value  = p.description || '';
+  document.getElementById('prod-badge').value = p.badge || '';
+  document.getElementById('prod-icon').value  = p.icon || '🎀';
+  const preview = document.getElementById('prod-img-preview');
+  if (p.image) { preview.src = p.image; preview.style.display = 'block'; }
+  else preview.style.display = 'none';
+  openModal('productModal');
+}
+
+async function saveProduct() {
+  const id   = document.getElementById('prod-id').value;
+  const form = new FormData();
+  ['name','category','price','originalPrice','description','stock','badge','icon'].forEach(k => {
+    const map = { name:'prod-name', category:'prod-cat', price:'prod-price', originalPrice:'prod-orig',
+                  description:'prod-desc', stock:'prod-stock', badge:'prod-badge', icon:'prod-icon' };
+    form.append(k, document.getElementById(map[k])?.value || '');
+  });
+  const imgFile = document.getElementById('prod-img').files[0];
+  if (imgFile) form.append('image', imgFile);
+
+  try {
+    if (id) {
+      await fetch(BASE + `/api/products/${id}`, { method:'PUT', body:form });
+      toast('מוצר עודכן בהצלחה ✅','success');
+    } else {
+      await fetch(BASE + '/api/products', { method:'POST', body:form });
+      toast('מוצר נוסף בהצלחה ✅','success');
+    }
+    closeModal('productModal');
+    loadProducts();
+    loadStats();
+  } catch(e) { toast('שגיאה בשמירה: ' + e.message,'error'); }
+}
+
+async function deleteProduct(id) {
+  if (!confirm('למחוק את המוצר?')) return;
+  try {
+    await API.del(`/api/products/${id}`);
+    toast('מוצר נמחק','success');
+    loadProducts(); loadStats();
+  } catch(e) { toast('שגיאה: ' + e.message,'error'); }
+}
+
+// ── ORDERS ────────────────────────────────────────────────────
+async function loadOrders() {
+  try {
+    orders = await API.get('/api/orders');
+    renderOrders(orders);
+    renderDashOrders(orders.slice(0, 8));
+  } catch(e) { toast('שגיאה בטעינת הזמנות','error'); }
+}
+
+const statusLabel = { pending:'ממתין', paid:'שולם', shipped:'נשלח', delivered:'נמסר', cancelled:'בוטל' };
+
+function renderOrders(list) {
+  const tbody = document.querySelector('#ordersTable tbody');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📦</div>אין הזמנות עדיין</div></td></tr>'; return; }
+  tbody.innerHTML = list.map(o => `
+    <tr>
+      <td><strong>${o.orderNumber}</strong></td>
+      <td>${o.customerName || '—'}</td>
+      <td>${o.customerPhone || '—'}</td>
+      <td><strong>₪${parseFloat(o.total||0).toLocaleString()}</strong></td>
+      <td>${o.shippingMethod || '—'}</td>
+      <td><span class="badge badge-${o.status}">${statusLabel[o.status] || o.status}</span></td>
+      <td><small>${new Date(o.createdAt).toLocaleDateString('he-IL')}</small></td>
+      <td><button class="btn btn-outline btn-sm" onclick="viewOrder('${o.id}')">פרטים</button></td>
+    </tr>`).join('');
+}
+
+function renderDashOrders(list) {
+  const tbody = document.querySelector('#dashOrdersTable tbody');
+  tbody.innerHTML = list.map(o => `
+    <tr>
+      <td><strong>${o.orderNumber}</strong></td>
+      <td>${o.customerName || '—'}</td>
+      <td>₪${parseFloat(o.total||0).toLocaleString()}</td>
+      <td><span class="badge badge-${o.status}">${statusLabel[o.status] || o.status}</span></td>
+      <td><small>${new Date(o.createdAt).toLocaleDateString('he-IL')}</small></td>
+    </tr>`).join('');
+}
+
+function filterOrders(q) {
+  const lq = q.toLowerCase();
+  renderOrders(orders.filter(o => o.orderNumber?.toLowerCase().includes(lq) || o.customerName?.toLowerCase().includes(lq)));
+}
+function filterOrdersStatus(s) {
+  renderOrders(s ? orders.filter(o => o.status === s) : orders);
+}
+
+function viewOrder(id) {
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  currentOrderId = id;
+  document.getElementById('orderModalTitle').textContent = `הזמנה ${o.orderNumber}`;
+  document.getElementById('orderStatusSelect').value = o.status;
+  const items = (o.items || []).map(i => `<tr><td>${i.icon||''} ${i.name}</td><td>₪${i.price}</td><td>${i.qty||1}</td></tr>`).join('');
+  document.getElementById('orderModalBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+      <div><strong>לקוח:</strong> ${o.customerName||'—'}<br><strong>טלפון:</strong> ${o.customerPhone||'—'}<br><strong>אימייל:</strong> ${o.customerEmail||'—'}</div>
+      <div><strong>כתובת:</strong> ${o.address||''}, ${o.city||''} ${o.zip||''}<br><strong>משלוח:</strong> ${o.shippingMethod||'—'}<br><strong>תשלום:</strong> ${o.gateway||'—'}</div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
+      <thead><tr><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">מוצר</th><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">מחיר</th><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">כמות</th></tr></thead>
+      <tbody>${items}</tbody>
+      <tfoot><tr><td colspan="2" style="padding:8px 4px;font-weight:700">סה"כ</td><td style="padding:8px 4px;font-weight:700;color:var(--gold)">₪${parseFloat(o.total||0).toLocaleString()}</td></tr></tfoot>
+    </table>
+    ${o.trackingNumber ? `<p style="margin-top:1rem;color:var(--text-muted)">🚚 מעקב: <strong>${o.trackingNumber}</strong></p>` : ''}
+    ${o.notes ? `<p style="margin-top:0.5rem"><strong>הערות:</strong> ${o.notes}</p>` : ''}`;
+  openModal('orderModal');
+}
+
+async function updateOrderStatus() {
+  const status = document.getElementById('orderStatusSelect').value;
+  try {
+    await API.put(`/api/orders/${currentOrderId}/status`, { status });
+    toast(`סטטוס עודכן ל: ${statusLabel[status]}`, 'success');
+    closeModal('orderModal');
+    loadOrders(); loadStats();
+  } catch(e) { toast('שגיאה: ' + e.message,'error'); }
+}
+
+async function createShipmentFromOrder() {
+  const o = orders.find(x => x.id === currentOrderId);
+  if (!o) return;
+  try {
+    const r = await API.post('/api/shipping/create', { order: o, service: 'N' });
+    toast(`משלוח DHL נוצר! מעקב: ${r.trackingNumber}`, 'success');
+    closeModal('orderModal');
+    loadOrders();
+  } catch(e) { toast('שגיאה ביצירת משלוח: ' + e.message,'error'); }
+}
+
+// ── BANNERS ──────────────────────────────────────────────────
+async function loadBanners() {
+  try {
+    banners = await API.get('/api/banners');
+    renderBanners();
+  } catch(e) {}
+}
+
+function renderBanners() {
+  const grid = document.getElementById('bannersGrid');
+  if (!banners.length) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🖼</div>אין באנרים עדיין</div>'; return; }
+  grid.innerHTML = banners.map(b => `
+    <div style="border:1px solid var(--border);overflow:hidden;background:var(--white)">
+      <div style="height:120px;background:${b.color};display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+        ${b.image ? `<img src="${b.image}" style="width:100%;height:100%;object-fit:cover">` : ''}
+        <div style="position:absolute;text-align:center;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,0.5)">
+          <div style="font-size:1.1rem;font-weight:700">${b.title}</div>
+          <div style="font-size:0.85rem">${b.subtitle}</div>
+        </div>
+      </div>
+      <div style="padding:0.75rem;display:flex;justify-content:space-between;align-items:center">
+        <a href="${b.link}" style="font-size:0.8rem;color:var(--text-muted)">${b.link}</a>
+        <button class="btn btn-danger btn-sm" onclick="deleteBanner('${b.id}')">🗑 מחק</button>
+      </div>
+    </div>`).join('');
+}
+
+function openAddBanner() { openModal('bannerModal'); }
+
+async function saveBanner() {
+  const form = new FormData();
+  form.append('title',    document.getElementById('ban-title').value);
+  form.append('subtitle', document.getElementById('ban-sub').value);
+  form.append('link',     document.getElementById('ban-link').value || '#products');
+  form.append('color',    document.getElementById('ban-color').value);
+  const f = document.getElementById('ban-img').files[0];
+  if (f) form.append('image', f);
+  try {
+    await fetch(BASE + '/api/banners', { method:'POST', body:form });
+    toast('באנר נוסף ✅','success');
+    closeModal('bannerModal');
+    loadBanners();
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function deleteBanner(id) {
+  if (!confirm('למחוק את הבאנר?')) return;
+  await API.del(`/api/banners/${id}`);
+  toast('באנר נמחק','success');
+  loadBanners();
+}
+
+// ── SETTINGS LOAD/SAVE ────────────────────────────────────────
+async function loadSettings() {
+  try { settings = await API.get('/api/settings'); }
+  catch(e) { settings = {}; }
+}
+
+function populateNotificationFields() {
+  const n = settings.notifications || {};
+  document.getElementById('n-inforu-user').value   = n.inforu?.username || '';
+  document.getElementById('n-inforu-pass').value   = n.inforu?.password || '';
+  document.getElementById('n-inforu-sender').value = n.inforu?.sender || '';
+  document.getElementById('n-sms-owner').checked   = !!n.smsToOwner;
+  document.getElementById('n-sms-cust').checked    = !!n.smsToCustomer;
+  document.getElementById('n-wa-token').value      = n.whatsapp?.token || '';
+  document.getElementById('n-wa-phoneid').value    = n.whatsapp?.phoneNumberId || '';
+  document.getElementById('n-wa-cust').checked     = !!n.whatsappToCustomer;
+  document.getElementById('n-email-host').value    = n.email?.host || '';
+  document.getElementById('n-email-port').value    = n.email?.port || '587';
+  document.getElementById('n-email-user').value    = n.email?.user || '';
+  document.getElementById('n-email-pass').value    = n.email?.pass || '';
+  document.getElementById('n-email-cust').checked  = !!n.emailToCustomer;
+}
+
+async function saveNotificationSettings() {
+  const data = {
+    notifications: {
+      smsToOwner:          document.getElementById('n-sms-owner').checked,
+      smsToCustomer:       document.getElementById('n-sms-cust').checked,
+      whatsappToCustomer:  document.getElementById('n-wa-cust').checked,
+      emailToCustomer:     document.getElementById('n-email-cust').checked,
+      inforu: {
+        username: document.getElementById('n-inforu-user').value,
+        password: document.getElementById('n-inforu-pass').value,
+        sender:   document.getElementById('n-inforu-sender').value
+      },
+      whatsapp: {
+        token:         document.getElementById('n-wa-token').value,
+        phoneNumberId: document.getElementById('n-wa-phoneid').value
+      },
+      email: {
+        host: document.getElementById('n-email-host').value,
+        port: document.getElementById('n-email-port').value,
+        user: document.getElementById('n-email-user').value,
+        pass: document.getElementById('n-email-pass').value
+      }
+    }
+  };
+  try {
+    settings = await API.put('/api/settings', data);
+    toast('הגדרות הודעות נשמרו ✅','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function populatePaymentFields() {
+  const p = settings.payment || {};
+  document.getElementById('p-cc-terminal').value  = p.cardcom?.terminalNumber || '';
+  document.getElementById('p-cc-user').value      = p.cardcom?.username || '';
+  document.getElementById('p-pp-key').value       = p.payplus?.apiKey || '';
+  document.getElementById('p-pp-uid').value       = p.payplus?.pageUid || '';
+  document.getElementById('p-tz-supplier').value  = p.tranzila?.supplier || '';
+  document.getElementById('p-tz-pw').value        = p.tranzila?.password || '';
+  document.getElementById('p-default-gateway').value = p.defaultGateway || 'cardcom';
+}
+
+async function savePaymentSettings() {
+  const data = {
+    payment: {
+      defaultGateway: document.getElementById('p-default-gateway').value,
+      cardcom:  { terminalNumber: document.getElementById('p-cc-terminal').value, username: document.getElementById('p-cc-user').value },
+      payplus:  { apiKey: document.getElementById('p-pp-key').value, pageUid: document.getElementById('p-pp-uid').value },
+      tranzila: { supplier: document.getElementById('p-tz-supplier').value, password: document.getElementById('p-tz-pw').value }
+    }
+  };
+  try {
+    settings = await API.put('/api/settings', data);
+    toast('הגדרות סליקה נשמרו ✅','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function populateShippingFields() {
+  const s = settings.shipping || {};
+  document.getElementById('s-dhl-key').value     = s.dhl?.apiKey || '';
+  document.getElementById('s-dhl-account').value = s.dhl?.accountNumber || '';
+  document.getElementById('s-dhl-zip').value     = s.dhl?.originZip || '';
+  document.getElementById('s-dhl-free').value    = s.freeFrom || '200';
+}
+
+async function saveShippingSettings() {
+  const data = {
+    shipping: {
+      freeFrom: document.getElementById('s-dhl-free').value,
+      dhl: {
+        apiKey:        document.getElementById('s-dhl-key').value,
+        accountNumber: document.getElementById('s-dhl-account').value,
+        originZip:     document.getElementById('s-dhl-zip').value
+      }
+    }
+  };
+  try {
+    settings = await API.put('/api/settings', data);
+    toast('הגדרות משלוחים נשמרו ✅','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function calcShipping() {
+  const zip = document.getElementById('calc-zip').value;
+  const weight = document.getElementById('calc-weight').value || '0.5';
+  const total = document.getElementById('calc-total').value || '0';
+  try {
+    const r = await API.post('/api/shipping/quote', { zip, weight, total });
+    document.getElementById('calc-results').innerHTML = r.rates.map(rt =>
+      `<div style="padding:0.6rem;border:1px solid var(--border);margin-bottom:0.5rem;display:flex;justify-content:space-between">
+        <span>${rt.name}</span><strong>${rt.price === 0 ? 'חינם' : '₪'+rt.price}</strong>
+      </div>`).join('');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function populateDesignFields() {
+  const d = settings.design || {};
+  document.getElementById('d-color-rose').value  = d.colorRose  || '#C4617A';
+  document.getElementById('d-color-gold').value  = d.colorGold  || '#B8860B';
+  document.getElementById('d-color-cream').value = d.colorCream || '#FAF6F0';
+  document.getElementById('d-color-dark').value  = d.colorDark  || '#2C1A1D';
+  document.getElementById('d-font-heading').value = d.fontHeading || 'Frank Ruhl Libre';
+  document.getElementById('d-btn-radius').value   = d.btnRadius || '0';
+  document.getElementById('d-grid-cols').value    = d.gridCols || '4';
+  document.getElementById('d-hero-line1').value   = d.heroLine1 || 'לשיער';
+  document.getElementById('d-hero-line2').value   = d.heroLine2 || 'שמספר סיפור';
+  document.getElementById('d-hero-sub').value     = d.heroSub   || '';
+  previewFont();
+}
+
+async function applyDesign() {
+  const data = {
+    design: {
+      colorRose:   document.getElementById('d-color-rose').value,
+      colorGold:   document.getElementById('d-color-gold').value,
+      colorCream:  document.getElementById('d-color-cream').value,
+      colorDark:   document.getElementById('d-color-dark').value,
+      fontHeading: document.getElementById('d-font-heading').value,
+      btnRadius:   document.getElementById('d-btn-radius').value,
+      gridCols:    document.getElementById('d-grid-cols').value,
+      heroLine1:   document.getElementById('d-hero-line1').value,
+      heroLine2:   document.getElementById('d-hero-line2').value,
+      heroSub:     document.getElementById('d-hero-sub').value
+    }
+  };
+  try {
+    settings = await API.put('/api/settings', data);
+    toast('עיצוב עודכן! רענן את החנות לראות שינויים ✅','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function resetDesign() {
+  if (!confirm('לאפס את כל הגדרות העיצוב?')) return;
+  document.getElementById('d-color-rose').value  = '#C4617A';
+  document.getElementById('d-color-gold').value  = '#B8860B';
+  document.getElementById('d-color-cream').value = '#FAF6F0';
+  document.getElementById('d-color-dark').value  = '#2C1A1D';
+  document.getElementById('d-font-heading').value = 'Frank Ruhl Libre';
+  document.getElementById('d-btn-radius').value   = '0';
+  document.getElementById('d-grid-cols').value    = '4';
+  previewFont();
+}
+
+function previewFont() {
+  const font = document.getElementById('d-font-heading').value;
+  const el   = document.getElementById('font-preview-heading');
+  el.style.fontFamily = `'${font}', serif`;
+  // Load Google Font if needed
+  const id = `gf-${font.replace(/\s/g,'_')}`;
+  if (!document.getElementById(id)) {
+    const link = document.createElement('link');
+    link.id   = id;
+    link.rel  = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(font)}&display=swap`;
+    document.head.appendChild(link);
+  }
+}
+
+function populateSettingsFields() {
+  const s = settings.store || {};
+  document.getElementById('st-name').value      = s.name     || '';
+  document.getElementById('st-email').value     = s.email    || '';
+  document.getElementById('st-phone').value     = s.phone    || '';
+  document.getElementById('st-city').value      = s.city     || '';
+  document.getElementById('st-address').value   = s.address  || '';
+  const soc = settings.social || {};
+  document.getElementById('st-instagram').value  = soc.instagram || '';
+  document.getElementById('st-tiktok').value     = soc.tiktok    || '';
+  document.getElementById('st-facebook').value   = soc.facebook  || '';
+  document.getElementById('st-wa-contact').value = soc.whatsapp  || '';
+  const seo = settings.seo || {};
+  document.getElementById('st-seo-title').value = seo.title || '';
+  document.getElementById('st-seo-desc').value  = seo.desc  || '';
+}
+
+async function saveStoreSettings() {
+  const data = {
+    store: {
+      name:    document.getElementById('st-name').value,
+      email:   document.getElementById('st-email').value,
+      phone:   document.getElementById('st-phone').value,
+      city:    document.getElementById('st-city').value,
+      address: document.getElementById('st-address').value
+    },
+    social: {
+      instagram: document.getElementById('st-instagram').value,
+      tiktok:    document.getElementById('st-tiktok').value,
+      facebook:  document.getElementById('st-facebook').value,
+      whatsapp:  document.getElementById('st-wa-contact').value
+    },
+    seo: {
+      title: document.getElementById('st-seo-title').value,
+      desc:  document.getElementById('st-seo-desc').value
+    }
+  };
+  try {
+    settings = await API.put('/api/settings', data);
+    toast('הגדרות החנות נשמרו ✅','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── NOTIFICATION TESTS ────────────────────────────────────────
+async function testSMS() {
+  const phone = document.getElementById('n-test-phone').value;
+  if (!phone) return toast('הכנסי מספר טלפון','error');
+  try {
+    await API.post('/api/notify/sms', { phone, message: 'בדיקה מחנות שושנה 🌸' });
+    toast('SMS נשלח!','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+async function testWhatsApp() {
+  const phone = document.getElementById('n-test-wa').value;
+  if (!phone) return toast('הכנסי מספר טלפון','error');
+  try {
+    await API.post('/api/notify/whatsapp', { phone, message: 'בדיקה מחנות שושנה 🌸✨' });
+    toast('WhatsApp נשלח!','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+async function testEmail() {
+  const to = document.getElementById('n-test-email').value;
+  if (!to) return toast('הכנסי כתובת אימייל','error');
+  try {
+    await API.post('/api/notify/email', { to, subject:'בדיקה מחנות שושנה 🌸', message:'זוהי הודעת בדיקה מחנות שושנה.' });
+    toast('אימייל נשלח!','success');
+  } catch(e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── MODAL UTILS ───────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ── IMAGE PREVIEW ─────────────────────────────────────────────
+function previewImage(input, previewId, dropzoneId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+    if (dropzoneId) document.getElementById(dropzoneId).querySelector('.upload-icon').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleDrop(e, inputId, dropzoneId) {
+  e.preventDefault();
+  const files = e.dataTransfer.files;
+  if (!files.length) return;
+  const input = document.getElementById(inputId);
+  const dt    = new DataTransfer();
+  dt.items.add(files[0]);
+  input.files = dt.files;
+  previewImage(input, inputId+'-preview', dropzoneId);
+}
+
+// ── ICON PICKER ───────────────────────────────────────────────
+function buildIconPicker() {
+  const picker = document.getElementById('iconPicker');
+  if (!picker) return;
+  picker.innerHTML = ICONS.map(ic =>
+    `<div class="icon-opt" onclick="selectIcon('${ic}')">${ic}</div>`
+  ).join('');
+}
+
+function selectIcon(ic) {
+  document.getElementById('prod-icon').value = ic;
+  document.querySelectorAll('.icon-opt').forEach(el => el.classList.toggle('selected', el.textContent === ic));
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function toast(msg, type = 'default') {
+  const wrap = document.getElementById('toasts');
+  const el   = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+// ── START ─────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

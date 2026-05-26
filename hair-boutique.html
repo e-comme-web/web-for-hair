@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שושנה | אביזרי שיער יוקרתיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+
+<style>
+  :root {
+    --cream:      #FAF6F0;
+    --cream-dark: #F0E8DC;
+    --rose:       #C4617A;
+    --rose-light: #E8B4BC;
+    --rose-deep:  #8B3A50;
+    --gold:       #B8860B;
+    --gold-light: #D4AF6A;
+    --gold-pale:  #F5E6C8;
+    --dark:       #2C1A1D;
+    --text:       #3D2B2E;
+    --text-light: #7A5C62;
+    --white:      #FFFFFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Frank Ruhl Libre', serif;
+    background: var(--cream);
+    color: var(--text);
+    direction: rtl;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ─── CART BUTTON ─── */
+  .cart-float {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1000;
+    background: var(--dark);
+    color: var(--gold-light);
+    border: none;
+    border-radius: 50px;
+    padding: 0.65rem 1.4rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(44,26,29,0.25);
+  }
+  .cart-float:hover { background: var(--rose-deep); transform: translateY(-2px); }
+  .cart-count {
+    background: var(--gold);
+    color: #fff;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .cart-count.bump { transform: scale(1.5); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 4rem 5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -15%;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,97,122,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-light);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    line-height: 1.0;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--rose-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15em;
+  }
+
+  .hero-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 2rem 0;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-tagline {
+    font-weight: 300;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--rose-light);
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.0s forwards;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(184,134,11,0.35); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid rgba(250,246,240,0.3);
+    padding: 1rem 2rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+  .hero-right {
+    background: var(--cream-dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(232,180,188,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(212,175,106,0.3) 0%, transparent 50%);
+  }
+
+  .hero-ornament {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.5s forwards;
+  }
+  .hero-ornament svg {
+    width: 70%;
+    max-width: 420px;
+    opacity: 0.5;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: var(--cream);
+    padding: 1rem 2rem;
+    text-align: center;
+    width: 200px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .hero-badge strong {
+    display: block;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .hero-badge span {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--rose-light);
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-wrap {
+    background: var(--rose);
+    padding: 0.85rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--cream);
+    letter-spacing: 0.1em;
+    padding: 0 3rem;
+  }
+  .marquee-dot {
+    color: var(--gold-light);
+    padding: 0 0.5rem;
+  }
+
+  /* ─── CATEGORIES ─── */
+  .section { padding: 5rem 2rem; max-width: 1300px; margin: 0 auto; }
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .cat-card {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: pointer;
+    group: true;
+  }
+  .cat-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .cat-card:hover .cat-bg { transform: scale(1.06); }
+
+  .cat-card:nth-child(1) .cat-bg { background: linear-gradient(160deg, #F5D7DF 0%, #E8B4BC 40%, #C4617A 100%); }
+  .cat-card:nth-child(2) .cat-bg { background: linear-gradient(160deg, #F5E6C8 0%, #D4AF6A 40%, #B8860B 100%); }
+  .cat-card:nth-child(3) .cat-bg { background: linear-gradient(160deg, #E8D5C4 0%, #C4A882 40%, #8B6B4A 100%); }
+  .cat-card:nth-child(4) .cat-bg { background: linear-gradient(160deg, #D5D5F5 0%, #B4B4E8 40%, #7A7AC4 100%); }
+
+  .cat-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    font-size: 4rem;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+    transition: transform 0.4s ease;
+  }
+  .cat-card:hover .cat-icon { transform: translate(-50%, -65%) scale(1.1); }
+
+  .cat-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(44,26,29,0.85) 0%, transparent 100%);
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+  }
+  .cat-card:hover .cat-info { transform: translateY(0); }
+  .cat-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+  }
+  .cat-count {
+    font-size: 0.8rem;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── PRODUCTS ─── */
+  .products-section {
+    background: var(--cream-dark);
+    padding: 5rem 0;
+  }
+  .products-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .filter-tab {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--rose-light);
+    background: transparent;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-radius: 50px;
+  }
+  .filter-tab.active,
+  .filter-tab:hover {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--gold-light);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2rem;
+  }
+
+  .product-card {
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(44,26,29,0.15);
+  }
+
+  .product-img {
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+  }
+  .product-card:nth-child(1) .product-img { background: linear-gradient(135deg, #FDEEF2, #F5D0D8); }
+  .product-card:nth-child(2) .product-img { background: linear-gradient(135deg, #FEF6E4, #F5E0B5); }
+  .product-card:nth-child(3) .product-img { background: linear-gradient(135deg, #F0EDF5, #DDD5EE); }
+  .product-card:nth-child(4) .product-img { background: linear-gradient(135deg, #EDF5F0, #C8E5D3); }
+  .product-card:nth-child(5) .product-img { background: linear-gradient(135deg, #F5EDEA, #EDD5CC); }
+  .product-card:nth-child(6) .product-img { background: linear-gradient(135deg, #EDF0F5, #C8D3E5); }
+  .product-card:nth-child(7) .product-img { background: linear-gradient(135deg, #F5F0ED, #E5D3C8); }
+  .product-card:nth-child(8) .product-img { background: linear-gradient(135deg, #FDEEF8, #F0C8E8); }
+
+  .product-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--rose);
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    font-weight: 500;
+  }
+  .product-badge.gold { background: var(--gold); }
+
+  .product-info {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+  .product-category {
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+  .product-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .product-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .product-price {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--dark);
+  }
+  .product-price small {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-decoration: line-through;
+    font-weight: 300;
+    margin-right: 0.4rem;
+  }
+  .add-to-cart {
+    background: var(--dark);
+    color: var(--gold-light);
+    border: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .add-to-cart:hover { background: var(--rose); transform: scale(1.15) rotate(10deg); }
+  .add-to-cart.added { background: var(--gold); transform: scale(1.2); }
+
+  /* ─── BANNER ─── */
+  .banner {
+    background: var(--dark);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.15);
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+  .banner::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.1);
+    animation: pulse-ring 4s ease-in-out 2s infinite;
+  }
+  .banner-inner { position: relative; z-index: 1; }
+  .banner-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    letter-spacing: 0.3em;
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  .banner-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+    margin-left: auto; margin-right: auto;
+  }
+  .banner-title span { color: var(--rose-light); }
+  .banner-sub {
+    color: rgba(250,246,240,0.6);
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .banner-numbers {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat strong {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .stat span {
+    font-size: 0.8rem;
+    color: var(--rose-light);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .testimonial-card {
+    padding: 2rem;
+    border: 1px solid var(--cream-dark);
+    position: relative;
+    background: var(--white);
+  }
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: -0.5rem;
+    right: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--rose-light);
+    line-height: 1;
+  }
+  .testimonial-stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+  }
+  .testimonial-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .author-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    background: var(--cream-dark);
+  }
+  .author-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dark);
+  }
+  .author-city {
+    font-size: 0.75rem;
+    color: var(--text-light);
+  }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    background: linear-gradient(135deg, var(--rose-deep) 0%, var(--dark) 100%);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  .newsletter-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 900;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+  .newsletter-sub {
+    color: var(--rose-light);
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .newsletter-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: var(--cream);
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1rem;
+    color: var(--dark);
+    outline: none;
+    direction: rtl;
+  }
+  .newsletter-btn {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 1rem 2rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+  }
+  .newsletter-btn:hover { background: var(--gold-light); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 4rem 2rem 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(250,246,240,0.1);
+  }
+  .footer-brand-name {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+  .footer-brand-sub {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--rose-light);
+    margin-bottom: 1.25rem;
+  }
+  .footer-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(250,246,240,0.55);
+    font-weight: 300;
+    max-width: 280px;
+  }
+  .footer-col-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-light);
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.6rem; }
+  .footer-links a {
+    color: rgba(250,246,240,0.55);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 300;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-copy {
+    font-size: 0.8rem;
+    color: rgba(250,246,240,0.35);
+  }
+  .footer-socials {
+    display: flex;
+    gap: 1rem;
+  }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(250,246,240,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: rgba(250,246,240,0.5);
+    transition: all 0.3s ease;
+  }
+  .social-link:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+  /* ─── CART DRAWER ─── */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(44,26,29,0.6);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    backdrop-filter: blur(3px);
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-drawer {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: min(420px, 100vw);
+    background: var(--cream);
+    z-index: 2001;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 20px 0 60px rgba(0,0,0,0.3);
+  }
+  .cart-drawer.open { transform: translateX(0); }
+
+  .cart-header {
+    padding: 1.5rem 2rem;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cart-header h3 { color: var(--gold-light); font-size: 1.1rem; font-weight: 700; letter-spacing: 0.1em; }
+  .cart-close {
+    background: none;
+    border: none;
+    color: var(--cream);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+    transition: color 0.2s;
+  }
+  .cart-close:hover { color: var(--rose-light); }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+  }
+  .cart-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-light);
+  }
+  .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .cart-item-icon {
+    width: 60px; height: 60px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    background: var(--cream-dark);
+    flex-shrink: 0;
+  }
+  .cart-item-details { flex: 1; }
+  .cart-item-name { font-weight: 700; font-size: 0.95rem; color: var(--dark); }
+  .cart-item-price { font-size: 0.85rem; color: var(--gold); font-weight: 500; }
+  .cart-item-remove {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    transition: color 0.2s;
+  }
+  .cart-item-remove:hover { color: var(--rose); }
+
+  .cart-footer {
+    padding: 1.5rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--cream-dark);
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .cart-total-label { font-size: 0.9rem; color: var(--text-light); }
+  .cart-total-price { font-size: 1.4rem; font-weight: 900; color: var(--dark); }
+  .checkout-btn {
+    width: 100%;
+    background: var(--dark);
+    color: var(--gold-light);
+    border: none;
+    padding: 1.1rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .checkout-btn:hover { background: var(--rose-deep); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.5; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes pulse-ring {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+    50%       { transform: translate(-50%, -50%) scale(1.05); opacity: 0.15; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-12px); }
+  }
+
+  .float-anim { animation: float 5s ease-in-out infinite; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 300px; }
+    .hero-left { padding: 4rem 2rem; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .banner-numbers { gap: 2rem; }
+  }
+  @media (max-width: 480px) {
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .newsletter-form { flex-direction: column; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── FLOATING CART ─── -->
+<button class="cart-float" id="cartToggle" onclick="openCart()">
+  <span>🛍</span>
+  <span>עגלה</span>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- ─── CART DRAWER ─── -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>עגלת הקניות</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="empty-icon">🛒</div>
+      <p>העגלה שלך ריקה</p>
+      <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">הוסיפי את הפריטים האהובים עלייך</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">סה"כ לתשלום:</span>
+      <span class="cart-total-price" id="cartTotal">₪0</span>
+    </div>
+    <a href="checkout.html" class="checkout-btn" style="display:block;text-align:center;text-decoration:none">לתשלום →</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">✦ קולקציית 2025 ✦</span>
+    <h1 class="hero-title">
+      לשיער<br>
+      <em>שמספר<br>סיפור</em>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">
+      אביזרי שיער יוקרתיים שמשלבים אסתטיקה עכשווית עם איכות שלא מתפשרת. כי כל פרט חשוב.
+    </p>
+    <div class="hero-cta">
+      <a href="#products" class="btn-primary">לקניות</a>
+      <a href="#categories" class="btn-ghost">גלי את הקולקציה</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-ornament float-anim">
+      <!-- Decorative botanical SVG -->
+      <svg viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="200" cy="250" rx="150" ry="200" stroke="#C4617A" stroke-width="0.5" stroke-dasharray="4 8"/>
+        <ellipse cx="200" cy="250" rx="100" ry="140" stroke="#B8860B" stroke-width="0.5" stroke-dasharray="2 6"/>
+        <!-- Petals -->
+        <path d="M200 80 Q240 140 200 200 Q160 140 200 80Z" fill="rgba(196,97,122,0.25)" stroke="#C4617A" stroke-width="0.8"/>
+        <path d="M200 420 Q240 360 200 300 Q160 360 200 420Z" fill="rgba(196,97,122,0.25)" stroke="#C4617A" stroke-width="0.8"/>
+        <path d="M60 250 Q120 210 180 250 Q120 290 60 250Z" fill="rgba(184,134,11,0.2)" stroke="#B8860B" stroke-width="0.8"/>
+        <path d="M340 250 Q280 210 220 250 Q280 290 340 250Z" fill="rgba(184,134,11,0.2)" stroke="#B8860B" stroke-width="0.8"/>
+        <path d="M200 250 Q260 190 280 130 Q220 170 200 250Z" fill="rgba(232,180,188,0.3)" stroke="#E8B4BC" stroke-width="0.8"/>
+        <path d="M200 250 Q140 190 120 130 Q180 170 200 250Z" fill="rgba(232,180,188,0.3)" stroke="#E8B4BC" stroke-width="0.8"/>
+        <path d="M200 250 Q260 310 280 370 Q220 330 200 250Z" fill="rgba(232,180,188,0.3)" stroke="#E8B4BC" stroke-width="0.8"/>
+        <path d="M200 250 Q140 310 120 370 Q180 330 200 250Z" fill="rgba(232,180,188,0.3)" stroke="#E8B4BC" stroke-width="0.8"/>
+        <!-- Center -->
+        <circle cx="200" cy="250" r="20" fill="rgba(184,134,11,0.4)" stroke="#B8860B" stroke-width="1"/>
+        <circle cx="200" cy="250" r="8" fill="#B8860B"/>
+        <!-- Dots -->
+        <circle cx="200" cy="80" r="3" fill="#C4617A"/>
+        <circle cx="200" cy="420" r="3" fill="#C4617A"/>
+        <circle cx="60" cy="250" r="3" fill="#B8860B"/>
+        <circle cx="340" cy="250" r="3" fill="#B8860B"/>
+      </svg>
+    </div>
+    <div class="hero-badge">
+      <strong>500+</strong>
+      <span>לקוחות מרוצות</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">משלוח חינם מ-200₪ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">איכות בוטיק יוקרתי <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">החזרות ללא שאלות <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">קולקציה חדשה 2025 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">שירות לקוחות אישי <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">משלוח חינם מ-200₪ <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">איכות בוטיק יוקרתי <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">החזרות ללא שאלות <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">קולקציה חדשה 2025 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">שירות לקוחות אישי <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- ─── CATEGORIES ─── -->
+<div id="categories">
+<div class="section">
+  <div class="section-header reveal">
+    <span class="section-label">קטגוריות</span>
+    <h2 class="section-title">גלי לפי סגנון</h2>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card reveal">
+      <div class="cat-bg"></div>
+      <div class="cat-icon">🎀</div>
+      <div class="cat-info">
+        <span class="cat-name">סרטי שיער</span>
+        <span class="cat-count">24 מוצרים</span>
+      </div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-bg"></div>
+      <div class="cat-icon">✨</div>
+      <div class="cat-info">
+        <span class="cat-name">קליפסים</span>
+        <span class="cat-count">31 מוצרים</span>
+      </div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-bg"></div>
+      <div class="cat-icon">💍</div>
+      <div class="cat-info">
+        <span class="cat-name">גומיות</span>
+        <span class="cat-count">18 מוצרים</span>
+      </div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-bg"></div>
+      <div class="cat-icon">🌸</div>
+      <div class="cat-info">
+        <span class="cat-name">סיכות</span>
+        <span class="cat-count">27 מוצרים</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ─── PRODUCTS ─── -->
+<div id="products">
+<div class="products-section">
+  <div class="products-inner">
+    <div class="section-header reveal">
+      <span class="section-label">מוצרים נבחרים</span>
+      <h2 class="section-title">הנמכרים ביותר</h2>
+    </div>
+
+    <div class="filter-tabs reveal">
+      <button class="filter-tab active" onclick="filterProducts('all', this)">הכל</button>
+      <button class="filter-tab" onclick="filterProducts('סרטי שיער', this)">סרטי שיער</button>
+      <button class="filter-tab" onclick="filterProducts('קליפסים', this)">קליפסים</button>
+      <button class="filter-tab" onclick="filterProducts('גומיות', this)">גומיות</button>
+      <button class="filter-tab" onclick="filterProducts('סיכות', this)">סיכות</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+
+      <div class="product-card reveal" data-category="סרטי שיער">
+        <div class="product-img">
+          🎀
+          <span class="product-badge">חדש</span>
+        </div>
+        <div class="product-info">
+          <span class="product-category">סרטי שיער</span>
+          <div class="product-name">סרט שיפון ורוד גדול</div>
+          <div class="product-desc">שיפון איטלקי רך, קשירה גמישה, מתאים לכל גיל</div>
+          <div class="product-footer">
+            <div class="product-price">₪79</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'סרט שיפון ורוד גדול', 79, '🎀')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="קליפסים">
+        <div class="product-img">
+          ✨
+          <span class="product-badge gold">פופולרי</span>
+        </div>
+        <div class="product-info">
+          <span class="product-category">קליפסים</span>
+          <div class="product-name">קליפס צב זהב גדול</div>
+          <div class="product-desc">אצטט פרמיום, אחיזה חזקה, לא מקמט את השיער</div>
+          <div class="product-footer">
+            <div class="product-price"><small>₪129</small>₪95</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'קליפס צב זהב גדול', 95, '✨')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="סיכות">
+        <div class="product-img">🌸</div>
+        <div class="product-info">
+          <span class="product-category">סיכות</span>
+          <div class="product-name">סיכת פרחים מרלין</div>
+          <div class="product-desc">סט 3 סיכות, ציפוי זהב 18K, עיצוב פרחוני עדין</div>
+          <div class="product-footer">
+            <div class="product-price">₪119</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'סיכת פרחים מרלין', 119, '🌸')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="גומיות">
+        <div class="product-img">💍</div>
+        <div class="product-info">
+          <span class="product-category">גומיות</span>
+          <div class="product-name">גומיית משי קלאסיק</div>
+          <div class="product-desc">100% משי טבעי, לא גורמת שבירה, סט של 6</div>
+          <div class="product-footer">
+            <div class="product-price">₪65</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'גומיית משי קלאסיק', 65, '💍')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="סרטי שיער">
+        <div class="product-img">
+          🎗
+          <span class="product-badge">חדש</span>
+        </div>
+        <div class="product-info">
+          <span class="product-category">סרטי שיער</span>
+          <div class="product-name">סרט קטיפה כהה</div>
+          <div class="product-desc">קטיפה איכותית, רוחב 3 ס"מ, לוק שנות ה-90</div>
+          <div class="product-footer">
+            <div class="product-price">₪59</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'סרט קטיפה כהה', 59, '🎗')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="קליפסים">
+        <div class="product-img">🐚</div>
+        <div class="product-info">
+          <span class="product-category">קליפסים</span>
+          <div class="product-name">קליפס בננה פנינה</div>
+          <div class="product-desc">צבע שנהב, פנינה סינטטית, לשיער בינוני-עבה</div>
+          <div class="product-footer">
+            <div class="product-price"><small>₪89</small>₪72</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'קליפס בננה פנינה', 72, '🐚')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="סיכות">
+        <div class="product-img">⭐</div>
+        <div class="product-info">
+          <span class="product-category">סיכות</span>
+          <div class="product-name">סיכת כוכב קריסטל</div>
+          <div class="product-desc">קריסטל סברובסקי, מתאים לאירועים ולשגרה</div>
+          <div class="product-footer">
+            <div class="product-price">₪89</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'סיכת כוכב קריסטל', 89, '⭐')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="גומיות">
+        <div class="product-img">
+          🌿
+          <span class="product-badge gold">מומלץ</span>
+        </div>
+        <div class="product-info">
+          <span class="product-category">גומיות</span>
+          <div class="product-name">סט גומיות פסטל 12 יח'</div>
+          <div class="product-desc">12 צבעים שונים, גומי חלק, ללא שריטה</div>
+          <div class="product-footer">
+            <div class="product-price">₪48</div>
+            <button class="add-to-cart" onclick="addToCart(this, 'סט גומיות פסטל', 48, '🌿')">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ─── BANNER ─── -->
+<div class="banner">
+  <div class="banner-inner">
+    <span class="banner-label">✦ המותג שלנו ✦</span>
+    <h2 class="banner-title">
+      אביזרים שמשדרגים כל <span>לוק</span>
+    </h2>
+    <p class="banner-sub">כי השיער שלך ראוי לטוב ביותר</p>
+    <a href="#products" class="btn-primary" style="text-decoration:none">לגלרייה המלאה</a>
+    <div class="banner-numbers">
+      <div class="stat"><strong>500+</strong><span>לקוחות מרוצות</span></div>
+      <div class="stat"><strong>100+</strong><span>מוצרים ייחודיים</span></div>
+      <div class="stat"><strong>4.9★</strong><span>דירוג ממוצע</span></div>
+      <div class="stat"><strong>24/7</strong><span>שירות לקוחות</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TESTIMONIALS ─── -->
+<div class="testimonials-section">
+  <div class="section-header reveal" style="max-width:1200px;margin:0 auto 3.5rem;">
+    <span class="section-label">חוות דעת</span>
+    <h2 class="section-title">מה אומרות הלקוחות</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"קיבלתי את הקליפס הזהב ולא מאמינה כמה הוא יפה באמת. איכות שלא ציפיתי לה במחיר הזה. כולן שואלות אותי מאיפה קניתי."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">💁‍♀️</div>
+        <div>
+          <div class="author-name">נועה לוי</div>
+          <div class="author-city">תל אביב</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"הסרטים מדהימים! ניסיתי המון מותגים ואלה הכי נוחים שהיו לי. המשלוח הגיע מהר ועם אריזה מקסימה."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">👩‍🦱</div>
+        <div>
+          <div class="author-name">מיכל כהן</div>
+          <div class="author-city">ירושלים</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"סט הגומיות הכי שווה שקניתי. אחרי 6 חודשים הן עדיין כמו חדשות. לא מקמטות ולא שוברות את השיער. ממליצה בחום!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">👩‍🦰</div>
+        <div>
+          <div class="author-name">שירה דוד</div>
+          <div class="author-city">חיפה</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── NEWSLETTER ─── -->
+<div class="newsletter">
+  <h2 class="newsletter-title">הישארי בעניינים</h2>
+  <p class="newsletter-sub">הנחה של 15% על ההזמנה הראשונה שלך + עדכוני קולקציה חדשה</p>
+  <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+    <input type="email" class="newsletter-input" placeholder="האימייל שלך..." required>
+    <button type="submit" class="newsletter-btn">הרשמי</button>
+  </form>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">שושנה</div>
+      <div class="footer-brand-sub">SHOSHANA HAIR BOUTIQUE</div>
+      <p class="footer-desc">אביזרי שיער יוקרתיים לאישה המודרנית. כי כל פרט קטן עושה את ההבדל.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">קטגוריות</div>
+      <ul class="footer-links">
+        <li><a href="#">סרטי שיער</a></li>
+        <li><a href="#">קליפסים</a></li>
+        <li><a href="#">גומיות</a></li>
+        <li><a href="#">סיכות</a></li>
+        <li><a href="#">מתנות</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">מידע</div>
+      <ul class="footer-links">
+        <li><a href="#">אודות</a></li>
+        <li><a href="#">מדיניות משלוחים</a></li>
+        <li><a href="#">מדיניות החזרות</a></li>
+        <li><a href="#">שאלות נפוצות</a></li>
+        <li><a href="#">צרי קשר</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">שעות שירות</div>
+      <ul class="footer-links">
+        <li><a href="tel:050-000-0000">050-000-0000</a></li>
+        <li><a href="mailto:info@shoshana.co.il">info@shoshana.co.il</a></li>
+        <li><a href="#">ראשון–חמישי: 9–18</a></li>
+        <li><a href="#">שישי: 9–13</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 שושנה | כל הזכויות שמורות</span>
+    <div class="footer-socials">
+      <a href="#" class="social-link">📸</a>
+      <a href="#" class="social-link">🎵</a>
+      <a href="#" class="social-link">💬</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ─── DESIGN SETTINGS FROM API ─── */
+  async function applyDesignSettings() {
+    try {
+      const s = await fetch((window.API_BASE||'') + '/api/settings').then(r => r.json());
+      const d = s.design || {};
+      const root = document.documentElement.style;
+      if (d.colorRose)  root.setProperty('--rose',  d.colorRose);
+      if (d.colorGold)  root.setProperty('--gold',  d.colorGold);
+      if (d.colorCream) root.setProperty('--cream', d.colorCream);
+      if (d.colorDark)  root.setProperty('--dark',  d.colorDark);
+      if (d.fontHeading) {
+        document.body.style.fontFamily = `'${d.fontHeading}', serif`;
+        const lid = 'gf-' + d.fontHeading.replace(/\s/g,'_');
+        if (!document.getElementById(lid)) {
+          const lk = document.createElement('link');
+          lk.id = lid; lk.rel = 'stylesheet';
+          lk.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(d.fontHeading)}&display=swap`;
+          document.head.appendChild(lk);
+        }
+      }
+      if (d.heroLine1) { const el = document.querySelector('.hero-title'); if(el) el.innerHTML = `${d.heroLine1}<br><em>${d.heroLine2||''}</em>`; }
+      if (d.heroSub)   { const el = document.querySelector('.hero-tagline'); if(el) el.textContent = d.heroSub; }
+      if (s.seo?.title) document.title = s.seo.title;
+    } catch(e) {}
+  }
+
+  /* ─── LOAD PRODUCTS FROM API ─── */
+  async function loadAPIProducts() {
+    try {
+      const products = await fetch((window.API_BASE||'') + '/api/products').then(r => r.json());
+      if (!products.length) return;
+      const grid   = document.getElementById('productsGrid');
+      const active = products.filter(p => p.active !== false);
+      if (!active.length) return;
+      const colors = ['linear-gradient(135deg,#FDEEF2,#F5D0D8)','linear-gradient(135deg,#FEF6E4,#F5E0B5)','linear-gradient(135deg,#F0EDF5,#DDD5EE)','linear-gradient(135deg,#EDF5F0,#C8E5D3)','linear-gradient(135deg,#F5EDEA,#EDD5CC)','linear-gradient(135deg,#EDF0F5,#C8D3E5)','linear-gradient(135deg,#F5F0ED,#E5D3C8)','linear-gradient(135deg,#FDEEF8,#F0C8E8)'];
+      grid.innerHTML = active.map((p, i) => `
+        <div class="product-card reveal" data-category="${p.category}" data-id="${p.id}">
+          <div class="product-img" style="background:${colors[i%colors.length]}">
+            ${p.image ? `<img src="${(window.API_BASE||'')+p.image}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">` : `<span style="font-size:5rem">${p.icon||'🎀'}</span>`}
+            ${p.badge ? `<span class="product-badge ${p.badge==='פופולרי'||p.badge==='מומלץ'?'gold':''}">${p.badge}</span>` : ''}
+          </div>
+          <div class="product-info">
+            <span class="product-category">${p.category}</span>
+            <div class="product-name">${p.name}</div>
+            <div class="product-desc">${p.description||''}</div>
+            <div class="product-footer">
+              <div class="product-price">${p.originalPrice?`<small>₪${p.originalPrice}</small>`:''}₪${p.price}</div>
+              <button class="add-to-cart" onclick="addToCart(this,'${p.name}',${p.price},'${p.icon||'🎀'}','${p.id}','${p.image||''}')">+</button>
+            </div>
+          </div>
+        </div>`).join('');
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } catch(e) {}
+  }
+
+  /* ─── CART STATE (localStorage) ─── */
+  let cart = JSON.parse(localStorage.getItem('shoshana_cart') || '[]');
+
+  function addToCart(btn, name, price, icon, productId, image) {
+    const existing = cart.find(i => i.productId === productId);
+    if (existing) { existing.qty = (existing.qty || 1) + 1; }
+    else { cart.push({ name, price, icon, image, productId, id: Date.now(), qty: 1 }); }
+    saveCart();
+    updateCartUI();
+
+    // Animate button
+    btn.textContent = '✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = '+'; btn.classList.remove('added'); }, 1200);
+
+    // Bump count
+    const count = document.getElementById('cartCount');
+    count.classList.add('bump');
+    setTimeout(() => count.classList.remove('bump'), 350);
+  }
+
+  function saveCart() {
+    localStorage.setItem('shoshana_cart', JSON.stringify(cart));
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const count = document.getElementById('cartCount');
+    const itemsEl = document.getElementById('cartItems');
+    const footerEl = document.getElementById('cartFooter');
+    const totalEl = document.getElementById('cartTotal');
+
+    count.textContent = cart.length;
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = `
+        <div class="cart-empty">
+          <div class="empty-icon">🛒</div>
+          <p>העגלה שלך ריקה</p>
+          <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">הוסיפי את הפריטים האהובים עלייך</p>
+        </div>`;
+      footerEl.style.display = 'none';
+    } else {
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-icon">${item.icon}</div>
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">₪${item.price}</div>
+          </div>
+          <button class="cart-item-remove" onclick="removeFromCart(${item.id})">✕</button>
+        </div>`).join('');
+      const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * (item.qty||1), 0);
+      totalEl.textContent = `₪${total}`;
+      footerEl.style.display = 'block';
+    }
+  }
+
+  function openCart() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ─── FILTER ─── */
+  function filterProducts(category, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = '';
+        card.style.animation = 'fadeUp 0.4s ease forwards';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  /* ─── NEWSLETTER ─── */
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.newsletter-btn');
+    btn.textContent = 'נרשמת! ✓';
+    btn.style.background = '#4CAF50';
+    setTimeout(() => { btn.textContent = 'הרשמי'; btn.style.background = ''; }, 3000);
+    e.target.reset();
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ─── INIT: load from API if server available ─── */
+  applyDesignSettings();
+  loadAPIProducts();
+
+  /* ─── restore cart count on load ─── */
+  updateCartUI();
+</script>
+</body>
+</html>

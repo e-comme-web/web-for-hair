@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שושנה — סיום קנייה</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root{
+  --cream:#FAF6F0;--cream-dark:#F0E8DC;--rose:#C4617A;--rose-light:#E8B4BC;
+  --gold:#B8860B;--gold-light:#D4AF6A;--dark:#2C1A1D;--text:#3D2B2E;
+  --text-muted:#7A5C62;--white:#fff;--border:#E8DDD5;--success:#4CAF50;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Frank Ruhl Libre',serif;background:var(--cream);color:var(--text);direction:rtl;min-height:100vh}
+
+/* header */
+.checkout-header{
+  background:var(--dark);padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--gold-light);text-decoration:none}
+.back-link{color:rgba(255,255,255,0.5);font-size:0.85rem;text-decoration:none;transition:color 0.2s}
+.back-link:hover{color:var(--gold-light)}
+
+/* steps bar */
+.steps{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:0.75rem 2rem;display:flex;gap:0;justify-content:center;
+}
+.step{
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.85rem;color:var(--text-muted);padding:0.25rem 1rem;
+}
+.step.active{color:var(--dark);font-weight:700}
+.step.done{color:var(--success)}
+.step-num{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--border);color:var(--text-muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:700;flex-shrink:0;
+}
+.step.active .step-num{background:var(--rose);color:#fff}
+.step.done .step-num{background:var(--success);color:#fff}
+.step-arrow{color:var(--border);margin:0 0.25rem;font-size:0.8rem}
+
+/* layout */
+.checkout-layout{
+  max-width:1000px;margin:2rem auto;padding:0 1.5rem;
+  display:grid;grid-template-columns:1fr 360px;gap:2rem;
+  align-items:start;
+}
+
+/* form sections */
+.form-section{background:var(--white);border:1px solid var(--border);margin-bottom:1.5rem}
+.form-section-head{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:0.75rem;
+}
+.form-section-head h3{font-size:1rem;font-weight:700;color:var(--dark)}
+.form-section-body{padding:1.5rem}
+.form-row{display:grid;gap:0.75rem;margin-bottom:0.75rem}
+.form-row.col2{grid-template-columns:1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:0.3rem}
+label{font-size:0.78rem;font-weight:700;color:var(--text-muted);letter-spacing:0.05em}
+label span{color:var(--rose);margin-right:2px}
+input,select{
+  padding:0.75rem 0.9rem;border:1px solid var(--border);
+  font-family:inherit;font-size:0.95rem;color:var(--dark);
+  outline:none;transition:border-color 0.2s;background:var(--white);
+  direction:rtl;width:100%;
+}
+input:focus,select:focus{border-color:var(--rose)}
+input.error,select.error{border-color:var(--rose);background:#FFF5F5}
+.field-err{font-size:0.75rem;color:var(--rose);margin-top:2px}
+
+/* shipping options */
+.shipping-opts{display:flex;flex-direction:column;gap:0.75rem}
+.shipping-opt{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem;border:2px solid var(--border);cursor:pointer;
+  transition:all 0.2s;position:relative;
+}
+.shipping-opt:hover{border-color:var(--rose-light)}
+.shipping-opt.selected{border-color:var(--rose);background:rgba(196,97,122,0.04)}
+.shipping-opt input[type=radio]{accent-color:var(--rose);width:18px;height:18px;flex-shrink:0}
+.shipping-opt-info{flex:1}
+.shipping-opt-name{font-size:0.95rem;font-weight:700;color:var(--dark)}
+.shipping-opt-days{font-size:0.8rem;color:var(--text-muted)}
+.shipping-opt-price{font-size:1rem;font-weight:900;color:var(--dark)}
+.shipping-loading{color:var(--text-muted);font-size:0.9rem;padding:1rem}
+
+/* payment options */
+.payment-opts{display:flex;flex-direction:column;gap:0.75rem}
+.payment-opt{
+  display:flex;align-items:center;gap:1rem;padding:1rem;
+  border:2px solid var(--border);cursor:pointer;transition:all 0.2s;
+}
+.payment-opt:hover{border-color:var(--rose-light)}
+.payment-opt.selected{border-color:var(--rose);background:rgba(196,97,122,0.04)}
+.payment-opt input[type=radio]{accent-color:var(--rose);width:18px;height:18px;flex-shrink:0}
+.payment-badge{
+  padding:0.2rem 0.6rem;font-size:0.7rem;font-weight:700;
+  border:1px solid;border-radius:3px;letter-spacing:0.05em;
+}
+.payment-badge.cardcom{color:#1565C0;border-color:#1565C0;background:#E3F2FD}
+.payment-badge.payplus{color:#2E7D32;border-color:#2E7D32;background:#E8F5E9}
+.payment-badge.tranzila{color:#6A1B9A;border-color:#6A1B9A;background:#F3E5F5}
+.security-note{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);margin-top:1rem}
+
+/* order summary */
+.order-summary{background:var(--white);border:1px solid var(--border);position:sticky;top:1.5rem}
+.summary-head{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  font-weight:700;color:var(--dark);display:flex;justify-content:space-between;align-items:center;
+}
+.summary-toggle{font-size:0.8rem;color:var(--rose);cursor:pointer}
+.summary-items{padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.summary-item{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.6rem 0;border-bottom:1px solid var(--cream-dark);
+}
+.summary-item:last-child{border-bottom:none}
+.item-icon{width:44px;height:44px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;border-radius:2px}
+.item-icon img{width:100%;height:100%;object-fit:cover}
+.item-name{font-size:0.9rem;font-weight:700;flex:1;color:var(--dark)}
+.item-price{font-size:0.95rem;font-weight:700;color:var(--dark)}
+.summary-totals{padding:1rem 1.5rem}
+.total-row{display:flex;justify-content:space-between;font-size:0.9rem;margin-bottom:0.5rem;color:var(--text-muted)}
+.total-row.final{
+  font-size:1.15rem;font-weight:900;color:var(--dark);
+  padding-top:0.75rem;border-top:1px solid var(--border);
+  margin-top:0.25rem;
+}
+.total-row.discount{color:var(--success)}
+
+/* checkout btn */
+.checkout-btn{
+  width:100%;background:var(--dark);color:var(--gold-light);border:none;
+  padding:1.1rem;font-family:inherit;font-size:1.05rem;font-weight:700;
+  letter-spacing:0.1em;cursor:pointer;transition:all 0.3s ease;
+  margin:1.25rem 1.5rem;width:calc(100% - 3rem);
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+}
+.checkout-btn:hover{background:var(--rose)}
+.checkout-btn:disabled{opacity:0.5;cursor:not-allowed}
+.checkout-btn.loading::after{
+  content:'';width:18px;height:18px;
+  border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;
+  border-radius:50%;animation:spin 0.8s linear infinite;margin-right:0.5rem;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* coupon */
+.coupon-row{display:flex;gap:0.5rem;margin-top:0.75rem}
+.coupon-row input{flex:1}
+.coupon-row button{
+  padding:0.75rem 1rem;background:var(--dark);color:var(--cream);
+  border:none;font-family:inherit;font-size:0.9rem;cursor:pointer;white-space:nowrap;
+}
+
+/* empty cart */
+.empty-cart{text-align:center;padding:4rem 2rem;grid-column:1/-1}
+.empty-cart .icon{font-size:4rem;margin-bottom:1rem}
+
+/* success page */
+.success-page{
+  max-width:560px;margin:4rem auto;padding:0 1.5rem;text-align:center;
+  display:none;
+}
+.success-icon{font-size:4rem;margin-bottom:1rem}
+.success-title{font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.75rem}
+.success-sub{color:var(--text-muted);font-size:1.05rem;margin-bottom:2rem;line-height:1.7}
+
+/* responsive */
+@media(max-width:768px){
+  .checkout-layout{grid-template-columns:1fr;gap:1.25rem}
+  .order-summary{position:static}
+  .form-row.col2{grid-template-columns:1fr}
+  .steps .step-arrow{display:none}
+  .step span:not(.step-num){display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="checkout-header">
+  <a href="hair-boutique.html" class="logo">שושנה</a>
+  <a href="hair-boutique.html" class="back-link">← חזרה לחנות</a>
+</header>
+
+<div class="steps" id="stepsBar">
+  <div class="step active" id="step1"><span class="step-num">1</span> <span>סל קניות</span></div>
+  <span class="step-arrow">›</span>
+  <div class="step" id="step2"><span class="step-num">2</span> <span>פרטים</span></div>
+  <span class="step-arrow">›</span>
+  <div class="step" id="step3"><span class="step-num">3</span> <span>משלוח</span></div>
+  <span class="step-arrow">›</span>
+  <div class="step" id="step4"><span class="step-num">4</span> <span>תשלום</span></div>
+</div>
+
+<!-- CHECKOUT FORM -->
+<div class="checkout-layout" id="checkoutLayout">
+
+  <!-- LEFT: FORM -->
+  <div>
+    <!-- Step 1: Cart Review (inline) -->
+    <!-- Step 2: Customer Details -->
+    <div class="form-section" id="sectionCustomer">
+      <div class="form-section-head"><span>👤</span><h3>פרטים אישיים</h3></div>
+      <div class="form-section-body">
+        <div class="form-row col2">
+          <div class="form-group">
+            <label>שם מלא <span>*</span></label>
+            <input id="f-name" placeholder="שם פרטי ושם משפחה" autocomplete="name">
+            <div class="field-err" id="err-name"></div>
+          </div>
+          <div class="form-group">
+            <label>טלפון <span>*</span></label>
+            <input id="f-phone" type="tel" placeholder="050-0000000" autocomplete="tel" dir="ltr">
+            <div class="field-err" id="err-phone"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>אימייל <span>*</span></label>
+            <input id="f-email" type="email" placeholder="name@example.com" autocomplete="email" dir="ltr">
+            <div class="field-err" id="err-email"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>כתובת מלאה <span>*</span></label>
+            <input id="f-address" placeholder="רחוב, מספר בית" autocomplete="street-address">
+            <div class="field-err" id="err-address"></div>
+          </div>
+        </div>
+        <div class="form-row col2">
+          <div class="form-group">
+            <label>עיר <span>*</span></label>
+            <input id="f-city" placeholder="תל אביב" autocomplete="address-level2">
+            <div class="field-err" id="err-city"></div>
+          </div>
+          <div class="form-group">
+            <label>מיקוד</label>
+            <input id="f-zip" placeholder="6100000" maxlength="7" dir="ltr" oninput="onZipChange()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>הערות להזמנה</label>
+            <input id="f-notes" placeholder="הוראות מיוחדות, הנחיות לשליח...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Shipping -->
+    <div class="form-section" id="sectionShipping">
+      <div class="form-section-head"><span>🚚</span><h3>אפשרויות משלוח</h3></div>
+      <div class="form-section-body">
+        <div class="shipping-opts" id="shippingOpts">
+          <div class="shipping-loading">⏳ בודק אפשרויות משלוח...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Payment -->
+    <div class="form-section" id="sectionPayment">
+      <div class="form-section-head"><span>💳</span><h3>אמצעי תשלום</h3></div>
+      <div class="form-section-body">
+        <div class="payment-opts" id="paymentOpts">
+          <div class="shipping-loading">⏳ טוען אפשרויות תשלום...</div>
+        </div>
+        <div class="security-note">
+          🔒 כל העסקאות מוצפנות ומאובטחות. הפרטים שלך אינם נשמרים אצלנו.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: ORDER SUMMARY -->
+  <div>
+    <div class="order-summary">
+      <div class="summary-head">
+        <span>סיכום הזמנה</span>
+        <span class="summary-toggle" onclick="toggleSummary()">הצג</span>
+      </div>
+      <div class="summary-items" id="summaryItems"></div>
+      <div class="summary-totals">
+        <div class="total-row"><span>סכום מוצרים</span><span id="tot-items">₪0</span></div>
+        <div class="total-row" id="tot-ship-row"><span>משלוח</span><span id="tot-ship">—</span></div>
+        <div class="total-row discount" id="tot-discount-row" style="display:none"><span>הנחה</span><span id="tot-discount">-₪0</span></div>
+        <div class="total-row final"><span>סה"כ לתשלום</span><span id="tot-final">₪0</span></div>
+      </div>
+      <div class="coupon-row" style="margin:0 1.5rem 0.75rem">
+        <input id="coupon-input" placeholder="קוד קופון..." dir="ltr">
+        <button onclick="applyCoupon()">החל</button>
+      </div>
+      <button class="checkout-btn" id="placeOrderBtn" onclick="placeOrder()">
+        🔒 לתשלום מאובטח
+      </button>
+      <div style="text-align:center;padding-bottom:1.5rem;font-size:0.8rem;color:var(--text-muted)">
+        משלוח חינם על הזמנות מעל ₪200 🌸
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EMPTY CART -->
+<div id="emptyCart" style="display:none" class="empty-cart">
+  <div class="icon">🛒</div>
+  <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:0.75rem">העגלה ריקה</h2>
+  <p style="color:var(--text-muted);margin-bottom:2rem">לא נמצאו פריטים בעגלה שלך</p>
+  <a href="hair-boutique.html" style="background:var(--dark);color:var(--gold-light);padding:1rem 2.5rem;text-decoration:none;font-weight:700">← חזרה לחנות</a>
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="success-page" id="successPage">
+  <div class="success-icon">✅</div>
+  <h1 class="success-title">הזמנה התקבלה!</h1>
+  <p class="success-sub" id="successMsg">תודה על הקנייה! נשלח אליך אישור בקרוב 🌸</p>
+  <div style="background:var(--cream-dark);padding:1.25rem;margin-bottom:2rem;text-align:right">
+    <div style="font-size:0.8rem;color:var(--text-muted)">מספר הזמנה</div>
+    <div style="font-size:1.5rem;font-weight:900;color:var(--gold)" id="successOrderNum">—</div>
+  </div>
+  <a href="hair-boutique.html" style="background:var(--dark);color:var(--gold-light);padding:1rem 2.5rem;text-decoration:none;font-weight:700;display:inline-block">חזרה לחנות</a>
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────
+let cart       = [];
+let subtotal   = 0;
+let shipping   = null;
+let discount   = 0;
+let settings   = {};
+const COUPONS  = { 'SHOSHANA10': 10, 'WELCOME15': 15 }; // % discount
+
+// ── INIT ─────────────────────────────────────────────────────
+async function init() {
+  cart = JSON.parse(localStorage.getItem('shoshana_cart') || '[]');
+  if (!cart.length) { showEmpty(); return; }
+
+  const BASE = window.API_BASE || '';
+  settings = await fetch(BASE + '/api/settings').then(r => r.json()).catch(() => ({}));
+
+  renderSummary();
+  loadShippingOptions();
+  loadPaymentOptions();
+  updateSteps(2);
+}
+
+function showEmpty() {
+  document.getElementById('checkoutLayout').style.display = 'none';
+  document.getElementById('emptyCart').style.display     = 'block';
+}
+
+// ── SUMMARY ───────────────────────────────────────────────────
+function renderSummary() {
+  subtotal = cart.reduce((s, i) => s + parseFloat(i.price) * (i.qty || 1), 0);
+
+  document.getElementById('summaryItems').innerHTML = cart.map(i => `
+    <div class="summary-item">
+      <div class="item-icon">${i.image ? `<img src="${i.image}">` : (i.icon || '🎀')}</div>
+      <div class="item-name">${i.name}${i.qty > 1 ? ` ×${i.qty}` : ''}</div>
+      <div class="item-price">₪${(parseFloat(i.price) * (i.qty||1)).toLocaleString()}</div>
+    </div>`).join('');
+
+  document.getElementById('tot-items').textContent = `₪${subtotal.toLocaleString()}`;
+  recalcTotal();
+}
+
+function recalcTotal() {
+  const shipCost = shipping ? parseFloat(shipping.price) : 0;
+  const disc     = discount;
+  const total    = Math.max(0, subtotal + shipCost - disc);
+
+  document.getElementById('tot-ship').textContent  = shipping ? (shipping.price === 0 ? 'חינם 🎉' : `₪${shipping.price}`) : '—';
+  document.getElementById('tot-final').textContent = `₪${total.toLocaleString()}`;
+
+  if (disc > 0) {
+    document.getElementById('tot-discount-row').style.display = '';
+    document.getElementById('tot-discount').textContent = `-₪${disc}`;
+  }
+}
+
+function toggleSummary() {
+  const el = document.getElementById('summaryItems');
+  el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
+// ── SHIPPING ──────────────────────────────────────────────────
+async function loadShippingOptions(zip = '') {
+  const opts = document.getElementById('shippingOpts');
+  opts.innerHTML = '<div class="shipping-loading">⏳ בודק אפשרויות משלוח...</div>';
+
+  try {
+    const r = await fetch(BASE + '/api/shipping/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ zip, weight: 0.5, total: subtotal })
+    });
+    const data = await r.json();
+
+    opts.innerHTML = data.rates.map((rt, i) => `
+      <label class="shipping-opt ${i === 0 ? 'selected' : ''}" onclick="selectShipping(this)">
+        <input type="radio" name="shipping" value="${JSON.stringify(rt).replace(/"/g,'&quot;')}" ${i === 0 ? 'checked' : ''}>
+        <div class="shipping-opt-info">
+          <div class="shipping-opt-name">${rt.name}</div>
+          ${rt.days ? `<div class="shipping-opt-days">זמן אספקה: ${rt.days}</div>` : ''}
+        </div>
+        <div class="shipping-opt-price">${rt.price === 0 ? '<span style="color:var(--success)">חינם 🎉</span>' : `₪${rt.price}`}</div>
+      </label>`).join('');
+
+    // Auto-select first
+    if (data.rates.length) {
+      shipping = data.rates[0];
+      recalcTotal();
+    }
+  } catch(e) {
+    opts.innerHTML = '<div style="color:var(--rose);padding:1rem">שגיאה בטעינת אפשרויות משלוח</div>';
+  }
+}
+
+function selectShipping(label) {
+  document.querySelectorAll('.shipping-opt').forEach(l => l.classList.remove('selected'));
+  label.classList.add('selected');
+  const val = label.querySelector('input')?.value;
+  if (val) {
+    shipping = JSON.parse(val.replace(/&quot;/g, '"'));
+    recalcTotal();
+  }
+}
+
+function onZipChange() {
+  const zip = document.getElementById('f-zip').value;
+  if (zip.length >= 5) loadShippingOptions(zip);
+}
+
+// ── PAYMENT ───────────────────────────────────────────────────
+function loadPaymentOptions() {
+  const payment  = settings.payment || {};
+  const gateways = [];
+
+  if (payment.cardcom?.terminalNumber)
+    gateways.push({ id:'cardcom', name:'כרטיס אשראי — Cardcom', icons:'💳 🏧', badge:'cardcom', desc:'ויזה, מאסטרקארד, אמריקן אקספרס' });
+  if (payment.payplus?.apiKey)
+    gateways.push({ id:'payplus', name:'PayPlus', icons:'💳 🍎 📱', badge:'payplus', desc:'כרטיס, Apple Pay, Google Pay, תשלומים' });
+  if (payment.tranzila?.supplier)
+    gateways.push({ id:'tranzila', name:'כרטיס אשראי — Tranzila', icons:'💳', badge:'tranzila', desc:'ויזה ומאסטרקארד' });
+
+  if (!gateways.length) {
+    gateways.push({ id:'cardcom', name:'כרטיס אשראי', icons:'💳', badge:'cardcom', desc:'דף תשלום מאובטח' });
+  }
+
+  const defaultGw = payment.defaultGateway || gateways[0]?.id;
+  document.getElementById('paymentOpts').innerHTML = gateways.map((g, i) => `
+    <label class="payment-opt ${g.id === defaultGw ? 'selected' : ''}" onclick="selectPayment(this)">
+      <input type="radio" name="payment" value="${g.id}" ${g.id === defaultGw ? 'checked' : ''}>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <strong>${g.name}</strong>
+          <span class="payment-badge ${g.badge}">${g.badge.toUpperCase()}</span>
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px">${g.desc} ${g.icons}</div>
+      </div>
+    </label>`).join('');
+}
+
+function selectPayment(label) {
+  document.querySelectorAll('.payment-opt').forEach(l => l.classList.remove('selected'));
+  label.classList.add('selected');
+}
+
+// ── COUPON ────────────────────────────────────────────────────
+function applyCoupon() {
+  const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+  if (COUPONS[code]) {
+    const pct  = COUPONS[code];
+    discount   = Math.round(subtotal * pct / 100);
+    recalcTotal();
+    document.getElementById('coupon-input').style.borderColor = 'var(--success)';
+    // Remove toast dependency, use inline
+    alert(`✅ קוד קופון הוחל! ${pct}% הנחה`);
+  } else {
+    document.getElementById('coupon-input').style.borderColor = 'var(--rose)';
+    alert('❌ קוד קופון לא תקין');
+  }
+}
+
+// ── VALIDATION ────────────────────────────────────────────────
+function validate() {
+  const fields = [
+    { id:'f-name',    err:'err-name',    msg:'נא להכניס שם מלא',      fn: v => v.trim().length > 1 },
+    { id:'f-phone',   err:'err-phone',   msg:'נא להכניס מספר טלפון',  fn: v => /^\d{9,12}$/.test(v.replace(/[-\s]/g,'')) },
+    { id:'f-email',   err:'err-email',   msg:'נא להכניס אימייל תקין', fn: v => /\S+@\S+\.\S+/.test(v) },
+    { id:'f-address', err:'err-address', msg:'נא להכניס כתובת',       fn: v => v.trim().length > 3 },
+    { id:'f-city',    err:'err-city',    msg:'נא להכניס עיר',         fn: v => v.trim().length > 1 }
+  ];
+
+  let valid = true;
+  fields.forEach(f => {
+    const el  = document.getElementById(f.id);
+    const err = document.getElementById(f.err);
+    if (!f.fn(el.value)) {
+      el.classList.add('error');
+      err.textContent = f.msg;
+      valid = false;
+    } else {
+      el.classList.remove('error');
+      err.textContent = '';
+    }
+  });
+
+  if (!shipping) { alert('נא לבחור אפשרות משלוח'); valid = false; }
+  if (!document.querySelector('input[name=payment]:checked')) { alert('נא לבחור אמצעי תשלום'); valid = false; }
+
+  return valid;
+}
+
+// ── PLACE ORDER ───────────────────────────────────────────────
+async function placeOrder() {
+  if (!validate()) return;
+
+  const btn     = document.getElementById('placeOrderBtn');
+  btn.disabled  = true;
+  btn.classList.add('loading');
+  btn.textContent = 'מעבד הזמנה...';
+
+  const gateway = document.querySelector('input[name=payment]:checked')?.value || 'cardcom';
+  const total   = Math.max(0, subtotal + (shipping?.price || 0) - discount);
+
+  const order = {
+    items:          cart,
+    total,
+    subtotal,
+    shippingPrice:  shipping?.price || 0,
+    shippingMethod: shipping?.name  || '',
+    shippingService: shipping?.service || '',
+    discount,
+    customerName:   document.getElementById('f-name').value.trim(),
+    customerPhone:  document.getElementById('f-phone').value.trim(),
+    customerEmail:  document.getElementById('f-email').value.trim(),
+    address:        document.getElementById('f-address').value.trim(),
+    city:           document.getElementById('f-city').value.trim(),
+    zip:            document.getElementById('f-zip').value.trim(),
+    notes:          document.getElementById('f-notes').value.trim(),
+    gateway
+  };
+
+  try {
+    // 1. Create order in backend
+    const created = await fetch(BASE + '/api/orders', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(order)
+    }).then(r => r.json());
+
+    // 2. Create payment link
+    const payPayload = {
+      amount:         total,
+      description:    `הזמנה ${created.orderNumber} — שושנה בוטיק`,
+      orderId:        created.id,
+      customerName:   order.customerName,
+      customerEmail:  order.customerEmail,
+      customerPhone:  order.customerPhone
+    };
+
+    const payRes = await fetch(BASE + `/api/payment/${gateway}`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payPayload)
+    }).then(r => r.json());
+
+    // 3. Clear cart
+    localStorage.removeItem('shoshana_cart');
+
+    // 4. Redirect to payment
+    if (payRes.redirectUrl) {
+      window.location.href = payRes.redirectUrl;
+    } else {
+      // Fallback: show success (demo mode)
+      showSuccess(created.orderNumber, order.customerName);
+    }
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.textContent = '🔒 לתשלום מאובטח';
+    alert('שגיאה ביצירת ההזמנה: ' + e.message);
+  }
+}
+
+// ── SUCCESS ───────────────────────────────────────────────────
+function showSuccess(orderNum, name) {
+  document.getElementById('checkoutLayout').style.display = 'none';
+  document.getElementById('stepsBar').style.display       = 'none';
+  const page = document.getElementById('successPage');
+  page.style.display = 'block';
+  document.getElementById('successOrderNum').textContent = orderNum;
+  document.getElementById('successMsg').textContent = `תודה ${name}! קיבלנו את הזמנתך ונודיע לך ברגע שתישלח 🌸`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── STEP INDICATOR ────────────────────────────────────────────
+function updateSteps(current) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step${i}`);
+    el.classList.remove('active','done');
+    if (i < current) el.classList.add('done');
+    else if (i === current) el.classList.add('active');
+  }
+}
+
+// Scroll-based step detection
+window.addEventListener('scroll', () => {
+  const s4 = document.getElementById('sectionPayment');
+  const s3 = document.getElementById('sectionShipping');
+  if (!s4 || !s3) return;
+  const y = window.scrollY + 120;
+  if (y >= s4.offsetTop) updateSteps(4);
+  else if (y >= s3.offsetTop) updateSteps(3);
+  else updateSteps(2);
+});
+
+// Clear error on input
+document.addEventListener('input', e => {
+  if (e.target.matches('input')) {
+    e.target.classList.remove('error');
+    const errEl = document.getElementById('err-' + e.target.id.replace('f-',''));
+    if (errEl) errEl.textContent = '';
+  }
+});
+
+// ── START ─────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

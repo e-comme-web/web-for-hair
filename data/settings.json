@@ -1,0 +1,50 @@
+{
+  "store": {
+    "name": "שושנה בוטיק",
+    "email": "",
+    "phone": "",
+    "city": "תל אביב",
+    "address": ""
+  },
+  "seo": {
+    "title": "שושנה | אביזרי שיער יוקרתיים",
+    "desc": "קולקציית אביזרי שיער יוקרתיים — סרטים, קליפסים, גומיות וסיכות"
+  },
+  "social": {
+    "instagram": "",
+    "tiktok": "",
+    "facebook": "",
+    "whatsapp": ""
+  },
+  "design": {
+    "colorRose": "#C4617A",
+    "colorGold": "#B8860B",
+    "colorCream": "#FAF6F0",
+    "colorDark": "#2C1A1D",
+    "fontHeading": "Frank Ruhl Libre",
+    "btnRadius": "0",
+    "gridCols": "4",
+    "heroLine1": "לשיער",
+    "heroLine2": "שמספר סיפור",
+    "heroSub": "אביזרי שיער יוקרתיים שמשלבים אסתטיקה עכשווית עם איכות שלא מתפשרת. כי כל פרט חשוב."
+  },
+  "payment": {
+    "defaultGateway": "cardcom",
+    "cardcom": { "terminalNumber": "", "username": "biz" },
+    "payplus": { "apiKey": "", "pageUid": "" },
+    "tranzila": { "supplier": "", "password": "" }
+  },
+  "shipping": {
+    "freeFrom": "200",
+    "dhl": { "apiKey": "", "accountNumber": "", "originZip": "" }
+  },
+  "notifications": {
+    "smsToOwner": true,
+    "smsToCustomer": true,
+    "whatsappToCustomer": false,
+    "emailToCustomer": false,
+    "inforu": { "username": "", "password": "", "sender": "Shoshana" },
+    "whatsapp": { "token": "", "phoneNumberId": "" },
+    "email": { "host": "", "port": "587", "user": "", "pass": "" }
+  }
+}
