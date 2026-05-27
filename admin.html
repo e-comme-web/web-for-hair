@@ -6,6 +6,12 @@
 <title>מירב — לוח ניהול</title>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
 <script src="config.js"></script>
+<script>
+// בדוק אם המשתמש logged in
+if (!sessionStorage.getItem('admin_logged_in')) {
+  window.location.href = 'admin-login.html';
+}
+</script>
 <style>
 :root {
   --sidebar-bg: #0F172A;
