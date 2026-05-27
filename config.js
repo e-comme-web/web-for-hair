@@ -11,4 +11,4 @@
 //
 // ═══════════════════════════════════════════════════════
 
-window.API_BASE = '';   // ← שנה כאן לכתובת Railway לאחר הפריסה
+window.API_BASE = 'https://web-for-hair.onrender.com';   // Render API
