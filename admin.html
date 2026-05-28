@@ -3,34 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מירב — לוח ניהול</title>
+<title>שושנה — לוח ניהול</title>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
 <script src="config.js"></script>
-<script>
-// בדוק אם המשתמש logged in
-if (!sessionStorage.getItem('admin_logged_in')) {
-  window.location.href = 'admin-login.html';
-}
-</script>
 <style>
 :root {
-  --sidebar-bg: #0F172A;
+  --sidebar-bg: #120B0D;
   --sidebar-w:  240px;
-  --cream:      #F0F9FF;
-  --cream-dark: #E0F2FE;
-  --blue:       #2563EB;
-  --blue-light: #93C5FD;
-  --teal:       #0891B2;
-  --teal-light: #06B6D4;
-  --purple:     #7C3AED;
-  --dark:       #0F172A;
-  --text:       #1E293B;
-  --text-muted: #64748B;
+  --cream:      #FAF6F0;
+  --cream-dark: #F0E8DC;
+  --rose:       #C4617A;
+  --rose-light: #E8B4BC;
+  --gold:       #B8860B;
+  --gold-light: #D4AF6A;
+  --dark:       #2C1A1D;
+  --text:       #3D2B2E;
+  --text-muted: #7A5C62;
   --white:      #FFFFFF;
-  --success:    #10B981;
-  --warning:    #F59E0B;
-  --danger:     #EF4444;
-  --border:     #CBD5E1;
+  --success:    #4CAF50;
+  --warning:    #FF9800;
+  --danger:     #E53935;
+  --border:     #E8DDD5;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'Frank Ruhl Libre',serif}
@@ -49,11 +42,11 @@ body{display:flex;background:var(--cream);color:var(--text)}
   border-bottom:1px solid rgba(255,255,255,0.07);
 }
 .sidebar-logo h1{
-  font-size:1.5rem;font-weight:900;color:var(--teal-light);
+  font-size:1.5rem;font-weight:900;color:var(--gold-light);
   font-family:'Cormorant Garamond',serif;font-style:italic;
   line-height:1;
 }
-.sidebar-logo span{font-size:0.7rem;letter-spacing:0.2em;color:var(--blue-light);display:block;margin-top:2px}
+.sidebar-logo span{font-size:0.7rem;letter-spacing:0.2em;color:var(--rose-light);display:block;margin-top:2px}
 .nav{flex:1;padding:0.5rem 0}
 .nav-section{
   font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.25);
@@ -68,12 +61,12 @@ body{display:flex;background:var(--cream);color:var(--text)}
 .nav-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85)}
 .nav-item.active{
   background:rgba(196,97,122,0.12);
-  color:var(--blue-light);
-  border-right-color:var(--blue);
+  color:var(--rose-light);
+  border-right-color:var(--rose);
 }
 .nav-item .icon{font-size:1rem;width:20px;text-align:center}
 .nav-badge{
-  margin-right:auto;background:var(--blue);color:#fff;
+  margin-right:auto;background:var(--rose);color:#fff;
   border-radius:50%;width:20px;height:20px;
   display:flex;align-items:center;justify-content:center;
   font-size:0.7rem;font-weight:700;
@@ -82,7 +75,7 @@ body{display:flex;background:var(--cream);color:var(--text)}
   padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);
   font-size:0.75rem;color:rgba(255,255,255,0.25);
 }
-.sidebar-footer a{color:var(--teal-light);text-decoration:none}
+.sidebar-footer a{color:var(--gold-light);text-decoration:none}
 
 /* ── MAIN ── */
 .main{margin-right:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
@@ -104,9 +97,9 @@ body{display:flex;background:var(--cream);color:var(--text)}
 }
 .stat-card::before{
   content:'';position:absolute;top:0;right:0;bottom:0;width:4px;
-  background:var(--blue);
+  background:var(--rose);
 }
-.stat-card:nth-child(2)::before{background:var(--teal)}
+.stat-card:nth-child(2)::before{background:var(--gold)}
 .stat-card:nth-child(3)::before{background:#7AB4E8}
 .stat-card:nth-child(4)::before{background:var(--success)}
 .stat-value{font-size:2rem;font-weight:900;color:var(--dark);line-height:1}
@@ -146,8 +139,8 @@ tr:last-child td{border-bottom:none}
 .badge-shipped   {background:#E3F2FD;color:#1565C0}
 .badge-delivered {background:#F3E5F5;color:#6A1B9A}
 .badge-cancelled {background:#FFEBEE;color:#C62828}
-.badge-new       {background:rgba(196,97,122,0.12);color:var(--blue)}
-.badge-sale      {background:rgba(184,134,11,0.12);color:var(--teal)}
+.badge-new       {background:rgba(196,97,122,0.12);color:var(--rose)}
+.badge-sale      {background:rgba(184,134,11,0.12);color:var(--gold)}
 
 /* ── BUTTONS ── */
 .btn{
@@ -155,10 +148,10 @@ tr:last-child td{border-bottom:none}
   font-size:0.875rem;cursor:pointer;transition:all 0.2s ease;
   display:inline-flex;align-items:center;gap:0.4rem;
 }
-.btn-primary{background:var(--dark);color:var(--teal-light)}
-.btn-primary:hover{background:var(--blue)}
-.btn-gold{background:var(--teal);color:#fff}
-.btn-gold:hover{background:var(--teal-light)}
+.btn-primary{background:var(--dark);color:var(--gold-light)}
+.btn-primary:hover{background:var(--rose)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--gold-light)}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-danger:hover{opacity:0.85}
 .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
@@ -179,7 +172,7 @@ input,select,textarea{
   transition:border-color 0.2s;outline:none;
   direction:rtl;width:100%;
 }
-input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+input:focus,select:focus,textarea:focus{border-color:var(--rose)}
 textarea{resize:vertical;min-height:80px}
 .form-hint{font-size:0.75rem;color:var(--text-muted)}
 
@@ -220,7 +213,7 @@ textarea{resize:vertical;min-height:80px}
   border:2px dashed var(--border);padding:2rem;text-align:center;
   cursor:pointer;transition:all 0.2s;background:var(--cream);
 }
-.upload-drop:hover,.upload-drop.drag{border-color:var(--blue);background:rgba(196,97,122,0.05)}
+.upload-drop:hover,.upload-drop.drag{border-color:var(--rose);background:rgba(196,97,122,0.05)}
 .upload-preview{
   width:100%;max-height:200px;object-fit:contain;margin-top:0.5rem;
 }
@@ -245,7 +238,7 @@ textarea{resize:vertical;min-height:80px}
   content:'';position:absolute;width:18px;height:18px;
   left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s;
 }
-.toggle input:checked + .toggle-slider{background:var(--blue)}
+.toggle input:checked + .toggle-slider{background:var(--rose)}
 .toggle input:checked + .toggle-slider::before{transform:translateX(20px)}
 
 /* ── COLOR PICKER ── */
@@ -310,7 +303,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
   padding:6px;text-align:center;font-size:1.2rem;cursor:pointer;
   border:2px solid transparent;border-radius:4px;transition:0.15s;
 }
-.icon-opt:hover,.icon-opt.selected{border-color:var(--blue);background:rgba(196,97,122,0.08)}
+.icon-opt:hover,.icon-opt.selected{border-color:var(--rose);background:rgba(196,97,122,0.08)}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
@@ -333,7 +326,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
 <!-- ── SIDEBAR ──────────────────────────────────────────────── -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <h1>מירב</h1>
+    <h1>שושנה</h1>
     <span>ADMIN PANEL</span>
   </div>
   <nav class="nav">
@@ -375,7 +368,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
   </nav>
   <div class="sidebar-footer">
     <a href="hair-boutique.html" target="_blank">🔗 פתח את החנות</a><br>
-    <span style="margin-top:4px;display:block">v1.0 | מירב בוטיק</span>
+    <span style="margin-top:4px;display:block">v1.0 | שושנה בוטיק</span>
   </div>
 </aside>
 
@@ -704,10 +697,82 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
         </div>
 
         <div class="design-section">
+          <h4>🎨 לוגו</h4>
+          <div class="form-group">
+            <label>תמונת לוגו</label>
+            <div class="upload-drop" onclick="document.getElementById('d-logo-upload').click()">
+              <div class="upload-icon">🖼️</div>
+              <div class="upload-text">גרור לוגו או לחץ להעלאה</div>
+              <input type="file" id="d-logo-upload" accept="image/*" style="display:none">
+              <img id="d-logo-preview" class="upload-preview" style="display:none">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:1rem">
+            <label>מיקום הלוגו</label>
+            <select id="d-logo-position">
+              <option value="header-center">בכותרת - מרכז</option>
+              <option value="header-right">בכותרת - ימין</option>
+              <option value="header-left">בכותרת - שמאל</option>
+              <option value="sidebar">בסרגל צד</option>
+              <option value="footer">בתחתית</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:0.5rem">
+            <label>גודל הלוגו</label>
+            <select id="d-logo-size">
+              <option value="small">קטן (60px)</option>
+              <option value="medium" selected>בינוני (100px)</option>
+              <option value="large">גדול (150px)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="design-section">
+          <h4>🎨 רקעים לפי עמוד</h4>
+          <div class="form-group">
+            <label>רקע Header</label>
+            <input type="color" id="d-bg-header" value="#0F172A">
+          </div>
+          <div class="form-group" style="margin-top:0.5rem">
+            <label>רקע Footer</label>
+            <input type="color" id="d-bg-footer" value="#1E293B">
+          </div>
+          <div class="form-group" style="margin-top:0.5rem">
+            <label>רקע Sidebar</label>
+            <input type="color" id="d-bg-sidebar" value="#0F172A">
+          </div>
+          <div class="form-group" style="margin-top:0.5rem">
+            <label>רקע דף</label>
+            <input type="color" id="d-bg-page" value="#F0F9FF">
+          </div>
+        </div>
+
+        <div class="design-section">
           <h4>📝 טקסטי Hero</h4>
           <div class="form-group"><label>שורה ראשונה</label><input id="d-hero-line1" placeholder="לשיער"></div>
           <div class="form-group" style="margin-top:0.5rem"><label>שורה שנייה (נטויה)</label><input id="d-hero-line2" placeholder="שמספר סיפור"></div>
           <div class="form-group" style="margin-top:0.5rem"><label>תת-כותרת</label><textarea id="d-hero-sub" rows="2" placeholder="אביזרי שיער יוקרתיים..."></textarea></div>
+        </div>
+
+        <div class="design-section">
+          <h4>🔤 סוגי טקסט נוסף</h4>
+          <div class="form-group">
+            <label>גודל טקסט</label>
+            <select id="d-text-size">
+              <option value="small">קטן</option>
+              <option value="medium" selected>בינוני</option>
+              <option value="large">גדול</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:0.5rem">
+            <label>רווח בין שורות</label>
+            <select id="d-line-height">
+              <option value="1.4">הדוק (1.4)</option>
+              <option value="1.6" selected>בינוני (1.6)</option>
+              <option value="1.8">רחוק (1.8)</option>
+              <option value="2">מאוד רחוק (2)</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -718,7 +783,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
         <div class="settings-section-head"><span>🏪</span><h3>פרטי החנות</h3></div>
         <div class="settings-section-body">
           <div class="form-row col2">
-            <div class="form-group"><label>שם החנות</label><input id="st-name" placeholder="מירב בוטיק"></div>
+            <div class="form-group"><label>שם החנות</label><input id="st-name" placeholder="שושנה בוטיק"></div>
             <div class="form-group"><label>אימייל</label><input id="st-email" type="email" placeholder="store@example.com"></div>
           </div>
           <div class="form-row col2">
@@ -748,7 +813,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
       <div class="settings-section">
         <div class="settings-section-head"><span>🔍</span><h3>SEO</h3></div>
         <div class="settings-section-body">
-          <div class="form-group"><label>כותרת האתר (Title)</label><input id="st-seo-title" placeholder="מירב | אביזרי שיער יוקרתיים"></div>
+          <div class="form-group"><label>כותרת האתר (Title)</label><input id="st-seo-title" placeholder="שושנה | אביזרי שיער יוקרתיים"></div>
           <div class="form-group" style="margin-top:0.5rem"><label>תיאור (Meta Description)</label><textarea id="st-seo-desc" rows="2" placeholder="קולקציית אביזרי שיער יוקרתיים..."></textarea></div>
         </div>
       </div>
@@ -1136,7 +1201,7 @@ function viewOrder(id) {
     <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
       <thead><tr><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">מוצר</th><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">מחיר</th><th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border)">כמות</th></tr></thead>
       <tbody>${items}</tbody>
-      <tfoot><tr><td colspan="2" style="padding:8px 4px;font-weight:700">סה"כ</td><td style="padding:8px 4px;font-weight:700;color:var(--teal)">₪${parseFloat(o.total||0).toLocaleString()}</td></tr></tfoot>
+      <tfoot><tr><td colspan="2" style="padding:8px 4px;font-weight:700">סה"כ</td><td style="padding:8px 4px;font-weight:700;color:var(--gold)">₪${parseFloat(o.total||0).toLocaleString()}</td></tr></tfoot>
     </table>
     ${o.trackingNumber ? `<p style="margin-top:1rem;color:var(--text-muted)">🚚 מעקב: <strong>${o.trackingNumber}</strong></p>` : ''}
     ${o.notes ? `<p style="margin-top:0.5rem"><strong>הערות:</strong> ${o.notes}</p>` : ''}`;
@@ -1444,7 +1509,7 @@ async function testSMS() {
   const phone = document.getElementById('n-test-phone').value;
   if (!phone) return toast('הכנסי מספר טלפון','error');
   try {
-    await API.post('/api/notify/sms', { phone, message: 'בדיקה מחנות מירב 🌸' });
+    await API.post('/api/notify/sms', { phone, message: 'בדיקה מחנות שושנה 🌸' });
     toast('SMS נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
@@ -1452,7 +1517,7 @@ async function testWhatsApp() {
   const phone = document.getElementById('n-test-wa').value;
   if (!phone) return toast('הכנסי מספר טלפון','error');
   try {
-    await API.post('/api/notify/whatsapp', { phone, message: 'בדיקה מחנות מירב 🌸✨' });
+    await API.post('/api/notify/whatsapp', { phone, message: 'בדיקה מחנות שושנה 🌸✨' });
     toast('WhatsApp נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
@@ -1460,7 +1525,7 @@ async function testEmail() {
   const to = document.getElementById('n-test-email').value;
   if (!to) return toast('הכנסי כתובת אימייל','error');
   try {
-    await API.post('/api/notify/email', { to, subject:'בדיקה מחנות מירב 🌸', message:'זוהי הודעת בדיקה מחנות מירב.' });
+    await API.post('/api/notify/email', { to, subject:'בדיקה מחנות שושנה 🌸', message:'זוהי הודעת בדיקה מחנות שושנה.' });
     toast('אימייל נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
