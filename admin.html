@@ -818,6 +818,80 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
         </div>
       </div>
 
+      <div class="settings-section">
+        <div class="settings-section-head"><span>💳</span><h3>שיטות תשלום</h3></div>
+        <div class="settings-section-body">
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px;border-left:3px solid #2563EB">
+            <p style="font-size:0.85rem;color:#1E293B"><strong>הוסף credentials</strong> לכל שירות שתבחר להשתמש בו</p>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">🏦 Cardcom</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>Terminal ID</label><input id="pay-cardcom-terminal" placeholder="XXXXX"></div>
+              <div class="form-group"><label>User ID</label><input id="pay-cardcom-user" placeholder="user123"></div>
+            </div>
+            <div class="form-row col2">
+              <div class="form-group"><label>Password</label><input id="pay-cardcom-pass" type="password" placeholder="••••••••"></div>
+              <div class="form-group"><label>Merchant ID</label><input id="pay-cardcom-merchant" placeholder="123456"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">💰 PayPlus</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>API Key</label><input id="pay-payplus-key" placeholder="api_key_xxx"></div>
+              <div class="form-group"><label>Secret Key</label><input id="pay-payplus-secret" type="password" placeholder="••••••••"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Business ID</label><input id="pay-payplus-bid" placeholder="999999"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">🔐 Stripe</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>Publishable Key</label><input id="pay-stripe-pub" placeholder="pk_live_xxx"></div>
+              <div class="form-group"><label>Secret Key</label><input id="pay-stripe-secret" type="password" placeholder="sk_live_xxx"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">📧 דיוור (Email)</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>שירות</label>
+                <select id="pay-email-service">
+                  <option value="gmail">Gmail</option>
+                  <option value="sendgrid">SendGrid</option>
+                  <option value="mailgun">Mailgun</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Email מחנות</label><input id="pay-email-from" type="email" placeholder="noreply@store.com"></div>
+            </div>
+            <div class="form-row col2">
+              <div class="form-group"><label>Username / API Key</label><input id="pay-email-user" placeholder="user@gmail.com"></div>
+              <div class="form-group"><label>Password / Secret</label><input id="pay-email-pass" type="password" placeholder="••••••••"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">📦 משלוחים (DHL)</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>DHL Account ID</label><input id="pay-dhl-account" placeholder="XXXXXXXXX"></div>
+              <div class="form-group"><label>DHL API Key</label><input id="pay-dhl-key" type="password" placeholder="••••••••"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;padding:1rem;background:#F0F9FF;border-radius:6px">
+            <h4 style="margin-bottom:0.75rem;font-weight:700;color:#0F172A">💬 WhatsApp Business</h4>
+            <div class="form-row col2">
+              <div class="form-group"><label>Phone Number ID</label><input id="pay-wa-phone-id" placeholder="XXXXXXXXXXXX"></div>
+              <div class="form-group"><label>Access Token</label><input id="pay-wa-token" type="password" placeholder="••••••••"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <button class="btn btn-primary" onclick="saveStoreSettings()">💾 שמור הגדרות</button>
     </div>
 
