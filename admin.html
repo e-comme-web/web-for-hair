@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>שושנה — לוח ניהול</title>
+<title>מירב — לוח ניהול</title>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
 <script src="config.js"></script>
 <style>
@@ -326,7 +326,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
 <!-- ── SIDEBAR ──────────────────────────────────────────────── -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <h1>שושנה</h1>
+    <h1>מירב</h1>
     <span>ADMIN PANEL</span>
   </div>
   <nav class="nav">
@@ -368,7 +368,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
   </nav>
   <div class="sidebar-footer">
     <a href="hair-boutique.html" target="_blank">🔗 פתח את החנות</a><br>
-    <span style="margin-top:4px;display:block">v1.0 | שושנה בוטיק</span>
+    <span style="margin-top:4px;display:block">v1.0 | מירב בוטיק</span>
   </div>
 </aside>
 
@@ -783,7 +783,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
         <div class="settings-section-head"><span>🏪</span><h3>פרטי החנות</h3></div>
         <div class="settings-section-body">
           <div class="form-row col2">
-            <div class="form-group"><label>שם החנות</label><input id="st-name" placeholder="שושנה בוטיק"></div>
+            <div class="form-group"><label>שם החנות</label><input id="st-name" placeholder="מירב בוטיק"></div>
             <div class="form-group"><label>אימייל</label><input id="st-email" type="email" placeholder="store@example.com"></div>
           </div>
           <div class="form-row col2">
@@ -813,7 +813,7 @@ input[type=color]{padding:0;border:1px solid var(--border);height:40px;width:60p
       <div class="settings-section">
         <div class="settings-section-head"><span>🔍</span><h3>SEO</h3></div>
         <div class="settings-section-body">
-          <div class="form-group"><label>כותרת האתר (Title)</label><input id="st-seo-title" placeholder="שושנה | אביזרי שיער יוקרתיים"></div>
+          <div class="form-group"><label>כותרת האתר (Title)</label><input id="st-seo-title" placeholder="מירב | אביזרי שיער יוקרתיים"></div>
           <div class="form-group" style="margin-top:0.5rem"><label>תיאור (Meta Description)</label><textarea id="st-seo-desc" rows="2" placeholder="קולקציית אביזרי שיער יוקרתיים..."></textarea></div>
         </div>
       </div>
@@ -1583,7 +1583,7 @@ async function testSMS() {
   const phone = document.getElementById('n-test-phone').value;
   if (!phone) return toast('הכנסי מספר טלפון','error');
   try {
-    await API.post('/api/notify/sms', { phone, message: 'בדיקה מחנות שושנה 🌸' });
+    await API.post('/api/notify/sms', { phone, message: 'בדיקה מחנות מירב 🌸' });
     toast('SMS נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
@@ -1591,7 +1591,7 @@ async function testWhatsApp() {
   const phone = document.getElementById('n-test-wa').value;
   if (!phone) return toast('הכנסי מספר טלפון','error');
   try {
-    await API.post('/api/notify/whatsapp', { phone, message: 'בדיקה מחנות שושנה 🌸✨' });
+    await API.post('/api/notify/whatsapp', { phone, message: 'בדיקה מחנות מירב 🌸✨' });
     toast('WhatsApp נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }
@@ -1599,7 +1599,7 @@ async function testEmail() {
   const to = document.getElementById('n-test-email').value;
   if (!to) return toast('הכנסי כתובת אימייל','error');
   try {
-    await API.post('/api/notify/email', { to, subject:'בדיקה מחנות שושנה 🌸', message:'זוהי הודעת בדיקה מחנות שושנה.' });
+    await API.post('/api/notify/email', { to, subject:'בדיקה מחנות מירב 🌸', message:'זוהי הודעת בדיקה מחנות מירב.' });
     toast('אימייל נשלח!','success');
   } catch(e) { toast('שגיאה: '+e.message,'error'); }
 }

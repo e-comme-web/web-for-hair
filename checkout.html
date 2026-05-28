@@ -186,7 +186,7 @@ input.error,select.error{border-color:var(--rose);background:#FFF5F5}
 <body>
 
 <header class="checkout-header">
-  <a href="hair-boutique.html" class="logo">שושנה</a>
+  <a href="hair-boutique.html" class="logo">מירב</a>
   <a href="hair-boutique.html" class="back-link">← חזרה לחנות</a>
 </header>
 
@@ -560,7 +560,7 @@ async function placeOrder() {
     // 2. Create payment link
     const payPayload = {
       amount:         total,
-      description:    `הזמנה ${created.orderNumber} — שושנה בוטיק`,
+      description:    `הזמנה ${created.orderNumber} — מירב בוטיק`,
       orderId:        created.id,
       customerName:   order.customerName,
       customerEmail:  order.customerEmail,
