@@ -1,7 +1,7 @@
 {
-  "name": "shoshana-boutique",
+  "name": "merav-hair-store",
   "version": "1.0.0",
-  "description": "חנות אביזרי שיער שושנה — פלטפורמת איקומרס מלאה",
+  "description": "חנות אביזרי שיער מירב — פלטפורמת איקומרס מלאה",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
