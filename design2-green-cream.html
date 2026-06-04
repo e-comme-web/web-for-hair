@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מירב | אביזרי שיער - Design 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Frank Ruhl Libre', serif; background: white; color: #2D5016; direction: rtl; }
+
+/* HEADER */
+header {
+  background: white;
+  border-bottom: 2px solid #2D5016;
+  padding: 1.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.1);
+}
+
+.logo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #2D5016;
+  letter-spacing: 2px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #F5F5F5;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #E8DCC0;
+  width: 250px;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1rem;
+  color: #2D5016;
+}
+
+.search-box input::placeholder { color: #999; }
+
+.cart-btn {
+  background: #2D5016;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.cart-btn:hover {
+  background: #E8DCC0;
+  color: #2D5016;
+  transform: translateY(-2px);
+}
+
+/* NAVIGATION */
+nav {
+  background: white;
+  border-bottom: 1px solid #E8DCC0;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav a {
+  text-decoration: none;
+  color: #2D5016;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: color 0.3s;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+}
+
+nav a:hover {
+  color: #E8DCC0;
+  border-bottom-color: #2D5016;
+}
+
+/* FEATURED SECTION */
+.featured {
+  min-height: 50vh;
+  background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(232, 220, 192, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.featured-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.featured h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: #2D5016;
+  margin-bottom: 1rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.featured p {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.cta-btn {
+  background: #2D5016;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: 'Frank Ruhl Libre', serif;
+  transition: all 0.3s;
+}
+
+.cta-btn:hover {
+  background: #E8DCC0;
+  color: #2D5016;
+  transform: translateY(-3px);
+}
+
+/* PRODUCTS SECTION */
+.products-section {
+  padding: 4rem 2rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #2D5016;
+  text-align: center;
+  margin-bottom: 3rem;
+  font-weight: 900;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.1);
+  transition: all 0.3s;
+  border: 1px solid #E8DCC0;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(45, 80, 22, 0.15);
+}
+
+.product-img {
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(135deg, #E8DCC0, #F5F5F5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+}
+
+.product-info {
+  padding: 1.5rem;
+}
+
+.product-name {
+  font-size: 1.15rem;
+  color: #2D5016;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.stars {
+  color: #B8860B;
+  font-size: 1rem;
+}
+
+.product-price {
+  font-size: 1.4rem;
+  color: #2D5016;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+
+.product-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: white;
+  color: #2D5016;
+  border: 2px solid #2D5016;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Frank Ruhl Libre', serif;
+  transition: all 0.3s;
+}
+
+.product-btn:hover {
+  background: #2D5016;
+  color: white;
+}
+
+/* FOOTER */
+footer {
+  background: #2D5016;
+  color: white;
+  padding: 3rem 2rem;
+  margin-top: 3rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #E8DCC0;
+}
+
+.footer-section p {
+  font-size: 0.95rem;
+  color: #D0D0D0;
+  line-height: 1.6;
+}
+
+.footer-bottom {
+  border-top: 1px solid #404040;
+  padding-top: 2rem;
+  text-align: center;
+  color: #D0D0D0;
+}
+
+@media (max-width: 768px) {
+  header { flex-direction: column; gap: 1rem; }
+  .search-box { width: 100%; }
+  nav { gap: 1rem; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">מירב</div>
+  <div class="header-actions">
+    <div class="search-box">
+      <input type="text" placeholder="חיפוש מוצרים...">
+    </div>
+    <button class="cart-btn">🛒 סל קניות</button>
+  </div>
+</header>
+
+<nav>
+  <a href="#new">חדש</a>
+  <a href="#best">מבצעים</a>
+  <a href="#categories">קטגוריות</a>
+  <a href="#about">אודות</a>
+  <a href="#contact">צור קשר</a>
+</nav>
+
+<div class="featured">
+  <div class="featured-content">
+    <h1>קולקציה חדשה 2026</h1>
+    <p>אביזרי שיער יוקרתיים לנשים משוכללות</p>
+    <button class="cta-btn">קנה עכשיו</button>
+  </div>
+</div>
+
+<div class="products-section">
+  <h2 class="section-title">המוצרים הפופולריים</h2>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">✨</div>
+      <div class="product-info">
+        <div class="product-name">קליפס זהב קלאסי</div>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span>(124 ביקורות)</span>
+        </div>
+        <div class="product-price">₪89</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">💎</div>
+      <div class="product-info">
+        <div class="product-name">סרט שיער משי</div>
+        <div class="product-rating">
+          <span class="stars">★★★★☆</span>
+          <span>(98 ביקורות)</span>
+        </div>
+        <div class="product-price">₪79</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">👑</div>
+      <div class="product-info">
+        <div class="product-name">קובה פרל</div>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span>(156 ביקורות)</span>
+        </div>
+        <div class="product-price">₪99</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">🌸</div>
+      <div class="product-info">
+        <div class="product-name">סיכה דקורטיבית</div>
+        <div class="product-rating">
+          <span class="stars">★★★★☆</span>
+          <span>(87 ביקורות)</span>
+        </div>
+        <div class="product-price">₪69</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">🎀</div>
+      <div class="product-info">
+        <div class="product-name">סרט קשירה</div>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span>(102 ביקורות)</span>
+        </div>
+        <div class="product-price">₪59</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">💄</div>
+      <div class="product-info">
+        <div class="product-name">סיכה ארטיסטית</div>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span>(143 ביקורות)</span>
+        </div>
+        <div class="product-price">₪129</div>
+        <button class="product-btn">הוסף לסל</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>אודות מירב</h3>
+      <p>אביזרי שיער יוקרתיים לנשים משוכללות. איכות ועיצוב מעולה בכל מוצר.</p>
+    </div>
+    <div class="footer-section">
+      <h3>קטגוריות</h3>
+      <p>קליפסים • סרטים • קובות • סיכות • אביזרים מיוחדים</p>
+    </div>
+    <div class="footer-section">
+      <h3>תמיכה</h3>
+      <p>צור קשר: contact@merav.co.il | 072-1234567</p>
+    </div>
+    <div class="footer-section">
+      <h3>עקבו אחרינו</h3>
+      <p>Instagram • Facebook • TikTok</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 מירב אביזרי שיער. כל הזכויות שמורות.</p>
+  </div>
+</footer>
+
+</body>
+</html>
